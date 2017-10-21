@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 
-
 def build_poly(x, degree, offset=True):
     '''
     Polynomial basis functions for input data x,
