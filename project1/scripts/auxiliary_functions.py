@@ -1,3 +1,6 @@
+# Auxiliary functions
+import numpy as np
+
 def standardize(x):
     """Standardize the original data set."""
     mean_x = np.mean(x, axis = 0)
@@ -38,7 +41,6 @@ def split_data(x, y, ratio, seed=1):
 
     return x_training, x_test, y_training, y_test
 
-
 def compute_mse(y, tx, w):
     """Calculates the loss using MSE."""
     if len(tx.shape) == 1:
@@ -50,49 +52,13 @@ def compute_mse(y, tx, w):
     z = z.T.dot(z)
     return z[0][0] / tx.shape[0]
 
-
-# -------------------------------------------------------
-
-#EX02
 def compute_gradient(y, tx, w):
     """Computes the gradient."""
     return (tx.T.dot(tx.dot(w) - y)) / len(y)
 
-#def gradient_descent(y, tx, initial_w, max_iters, gamma):
+def compute_stoch_gradient(y, tx, w):
+    """Compute a stochastic gradient from just few examples n and their corresponding y_n labels."""
+    n = np.random.randint(0, np.shape(y)[0])
+    aux1 = y[n] - tx[n].dot(w)
+    return -(tx[n].dot(aux1))
 
-
-
-
-# Might have to move it to a different file?
-def polynomial_regression():
-    '''Constructing the polynomial basis function expansion of the data,
-       and then running least squares regression.'''
-
-    # define parameters
-    degrees = [1, 3, 7, 12]
-
-    # define structure of the figure
-    num_row = 2
-    num_col = 2
-    f, axs = plt.subplots(num_row, num_col)
-
-    for ind, degree in enumerate(degrees):
-        x_standardized, mean_x, std_x = standardize(x)
-        tx = build_poly(x_standardized, degree)
-        w_opt, rmse = least_squares(y, tx)
-
-        print("Processing {i}th experiment, degree={d}, rmse={loss}".format(
-              i=ind + 1, d=degree, loss=rmse))
-
-        # plot fit
-        x_cont = np.linspace(np.min(x),np.max(x),100)
-        x_cont_standardized = (x_cont-mean_x)/std_x
-        X_cont = build_poly(x_cont_standardized, degree)
-        y_cont = X_cont.dot(w_opt)
-        plt.subplot(2,2,ind+1)
-        plt.scatter(x, y, s=10),
-        plt.plot(x_cont, y_cont, color='darkorange')
-
-    plt.tight_layout()
-    plt.savefig("visualize_polynomial_regression")
-    plt.show()
