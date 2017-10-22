@@ -52,6 +52,10 @@ def compute_mse(y, tx, w):
     z = z.T.dot(z)
     return z[0][0] / tx.shape[0]
 
+def compute_mae(y, tx, w):
+    """Calculates the loss using mae."""
+    return np.sum(np.abs(y - tx.dot(w))) / np.shape(y)[0]
+
 def compute_gradient(y, tx, w):
     """Computes the gradient."""
     return (tx.T.dot(tx.dot(w) - y)) / len(y)
