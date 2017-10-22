@@ -25,30 +25,32 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, return_all=False):
     else:
         return loss, w
 
-# TODO: Change it so that it doesn't return partial results
-# TODO: Maybe change the step?
-def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
+def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma,
+    seed=13, return_all=False):
     """Stochastic gradient descent algorithm."""
-    ws = [initial_w]
-    losses = []
     w = initial_w
-
+    if return_all:
+        ws = [w]
+        losses = []
     for n_iter in range(max_iters):
         # compute gradient and loss
-        gradient = compute_stoch_gradient(y, tx, w)
-        loss = compute_mse(y, tx, w)
+        w_1 = w
+        gradient = compute_stoch_gradient(y, tx, w, seed)
+        loss = compute_loss(y, tx, w)
 
         # update w by gradient
-        aux = w - gamma * gradient
-        w = aux
+        w = w_1 - gamma * gradient
 
-        # store w and loss
-        ws.append(w)
-        losses.append(loss)
-        print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
-              bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
-
-    return losses, ws
+        if return_all:
+            # store w and loss
+            ws.append(w)
+            losses.append(loss)
+            print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
+                bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
+    if return_all:
+        return losses, ws
+    else:
+        return loss, w
 
 def least_squares(y, tx):
     """Least squares regression using normal equations.

@@ -60,8 +60,9 @@ def compute_gradient(y, tx, w):
     """Computes the gradient."""
     return (tx.T.dot(tx.dot(w) - y)) / len(y)
 
-def compute_stoch_gradient(y, tx, w):
+def compute_stoch_gradient(y, tx, w, seed=13):
     """Compute a stochastic gradient from just few examples n and their corresponding y_n labels."""
+    random.seed(seed)
     n = np.random.randint(0, np.shape(y)[0])
     aux1 = y[n] - tx[n].dot(w)
     return -(tx[n].dot(aux1))
