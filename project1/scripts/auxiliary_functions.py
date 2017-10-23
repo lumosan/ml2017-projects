@@ -9,6 +9,12 @@ def standardize(x):
     x = x / std_x
     return x, mean_x, std_x
 
+def de_standardize(x, mean_x, std_x):
+    """Reverse the procedure of standardization."""
+    x = x * std_x
+    x = x + mean_x
+    return x
+
 def build_poly(x, degree, offset=True):
     """Polynomial basis functions for input data x,
     for up to a certain degree."""
@@ -56,14 +62,36 @@ def compute_mae(y, tx, w):
     """Calculates the loss using mae."""
     return np.sum(np.abs(y - tx.dot(w))) / np.shape(y)[0]
 
-def compute_gradient(y, tx, w):
-    """Computes the gradient."""
-    return (tx.T.dot(tx.dot(w) - y)) / len(y)
+def sigmoid(t):
+    """Apply sigmoid function on t, with t being a one dim vector"""
+    t_exp = np.exp(t)
+    return t_exp / (t_exp + 1)
 
-def compute_stoch_gradient(y, tx, w, seed=13):
-    """Compute a stochastic gradient from just few examples n and their corresponding y_n labels."""
-    random.seed(seed)
-    n = np.random.randint(0, np.shape(y)[0])
-    aux1 = y[n] - tx[n].dot(w)
-    return -(tx[n].dot(aux1))
+def learning_by_gradient_descent(y, tx, w, gamma):
+    """Do one step of gradient descent using logistic regression.
+    Return the loss and the updated w.
+    """
+    tx_w = tx.dot(w)
+    # compute the cost
+    loss = np.sum(np.log(1 + np.exp(tx_w))) - np.sum(y * tx_w)
+    # compute the gradient
+    gradient = tx.T.dot(sigmoid(tx_w) - y)
+    # update w
+    w_1 = w
+    w = w_1 - gamma * gradient
+    return loss, w
 
+def learning_by_reg_gradient_descent(y, tx, lambda_, w, gamma):
+    """Do one step of gradient descent using logistic regression.
+    Return the loss and the updated w.
+    """
+    tx_w = tx.dot(w)
+    # compute the cost
+    loss = (np.sum(np.log(1 + np.exp(tx_w))) - np.sum(y * tx_w) +
+        lambda_ / 2 * compute_mse(y, tx, w))
+    # compute the gradient
+    gradient = tx.T.dot(sigmoid(tx_w) - y) + lambda_ * w
+    # update w
+    w_1 = w
+    w = w_1 - gamma * gradient
+    return loss, w
