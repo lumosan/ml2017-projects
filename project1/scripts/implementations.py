@@ -133,7 +133,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma,
 
     for n_iter in range(max_iters):
         # get loss and update w by gradient
-        loss, w = learning_by_reg_gradient_descent(y, tx, w, gamma)
+        loss, w = learning_by_reg_gradient_descent(y, tx, lambda_, w, gamma)
 
         if return_all:
         # store w and loss
