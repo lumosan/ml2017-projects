@@ -87,16 +87,24 @@ def logistic_by_gd(y, tx, w, gamma):
     w = w_1 - gamma * gradient
     return loss, w
 
-def reg_logistic_by_gd(y, tx, lambda_, w, gamma):
+def reg_logistic_by_gd(y, tx, lambda_, w, gamma, penalize_offset):
     """Do one step of gradient descent using logistic regression.
     Return the loss and the updated w.
     """
     tx_w = tx.dot(w)
-    # compute the cost
-    loss = (np.sum(np.log(1 + np.exp(tx_w))) - np.sum(y * tx_w) +
-        lambda_ / 2 * compute_mse(y, tx, w))
-    # compute the gradient
-    gradient = tx.T.dot(sigmoid(tx_w) - y) + lambda_ * w
+    if penalize_offset:
+        # compute the cost
+        loss = (np.sum(np.log(1 + np.exp(tx_w))) - np.sum(y * tx_w) +
+            lambda_ / 2 * compute_mse(y, tx, w))
+        # compute the gradient
+        gradient = tx.T.dot(sigmoid(tx_w) - y) + lambda_ * w
+    else:
+        w_no_offset=w
+        w_no_offset[0]=0
+        loss = (np.sum(np.log(1 + np.exp(tx_w))) - np.sum(y * tx_w) +
+            lambda_ / 2 * compute_mse(y, tx, w_no_offset))
+        # compute the gradient
+        gradient = tx.T.dot(sigmoid(tx_w) - y) + lambda_ * w_no_offset
     # update w
     w_1 = w
     w = w_1 - gamma * gradient
@@ -113,3 +121,9 @@ def get_batch(y, tx, batch_size):
     p = np.random.permutation(np.arange(m))
     tx_p, y_p = tx[p], y[p]
     return y_p[:batch_size], tx_p[:batch_size,:]
+
+def adaptive_gamma(kappa=0.75, eta0=1e-5):
+    t = 1
+    while True:
+        yield eta0*t**-kappa
+        t += 1

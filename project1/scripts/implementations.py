@@ -117,7 +117,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma,
         return w, loss
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma,
-    batch_size=1000, return_all=False):
+    batch_size=1000, return_all=False, penalize_offset=True):
     """Regularized logistic regression using mini-batch gradient descent"""
     if len(tx.shape) == 1:
         tx = tx.reshape(-1, 1)
@@ -135,7 +135,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma,
         # get batch
         y_n, tx_n = get_batch(y, tx, batch_size)
         # get loss and update w by gradient
-        loss, w = reg_logistic_by_gd(y_n, tx_n, lambda_, w, gamma)
+        loss, w = reg_logistic_by_gd(y_n, tx_n, lambda_, w, gamma, penalize_offset)
 
         if return_all:
         # store w and loss
