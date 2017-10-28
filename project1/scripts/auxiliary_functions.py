@@ -1,6 +1,7 @@
 # Auxiliary functions
 import numpy as np
 
+# Functions for preparing data
 def standardize(x):
     """Standardize the original data set."""
     mean_x = np.mean(x, axis = 0)
@@ -18,17 +19,26 @@ def de_standardize(x, mean_x, std_x):
 def build_poly(x, degree, offset=True):
     """Polynomial basis functions for input data x,
     for up to a certain degree."""
-    if offset:
-        rows, cols = np.indices((x.shape[0], degree+1))
-        tx = np.power(x[rows], cols)
+    if len(np.array(x).shape) == 1:
+        if offset:
+            rows, cols = np.indices((x.shape[0], degree+1))
+            tx = np.power(x[rows], cols)
+        else:
+            rows, cols = np.indices((x.shape[0], degree))
+            tx = np.power(x[rows], cols+1)
     else:
         rows, cols = np.indices((x.shape[0], degree))
-        tx = np.power(x[rows], cols+1)
+        xT = np.array(x).T
+        tx = np.ones([x.shape[0],1])
+        for r in xT:
+            tx_r = np.power(r[rows], cols+1)
+            tx = np.concatenate([tx, tx_r], axis=1)
     return tx
 
 def build_model_data(x, y):
-    """Form (y,tX) to get regression data in matrix form. Uses build_poly."""
-    return y, build_poly(x, 1, offset=True)
+    """Form (y,tX) to get regression data in matrix form."""
+    tx = np.c_[np.ones(len(y)), x]
+    return y, tx
 
 def split_data(x, y, ratio, seed=1):
     """Split the dataset based on the split ratio.
@@ -47,6 +57,7 @@ def split_data(x, y, ratio, seed=1):
 
     return x_training, x_test, y_training, y_test
 
+# Cost and gradient computation functions
 def compute_mse(y, tx, w):
     """Calculates the loss using MSE."""
     if len(tx.shape) == 1:
@@ -61,11 +72,6 @@ def compute_mse(y, tx, w):
 def compute_mae(y, tx, w):
     """Calculates the loss using mae."""
     return np.sum(np.abs(y - tx.dot(w))) / np.shape(y)[0]
-
-def sigmoid(t):
-    """Apply sigmoid function on t, with t being a one dim vector"""
-    t_exp = np.exp(t)
-    return t_exp / (t_exp + 1)
 
 def logistic_by_gd(y, tx, w, gamma):
     """Do one step of gradient descent using logistic regression.
@@ -96,6 +102,11 @@ def reg_logistic_by_gd(y, tx, lambda_, w, gamma):
     w = w_1 - gamma * gradient
     return loss, w
 
+# Other functions
+def sigmoid(t):
+    """Apply sigmoid function on t, with t being a one dim vector"""
+    t_exp = np.exp(t)
+    return t_exp / (t_exp + 1)
 
 def get_batch(y, tx, batch_size):
     m = tx.shape[0]
