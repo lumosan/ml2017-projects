@@ -81,7 +81,7 @@ def logistic_by_gd(y, tx, w, gamma):
     w = w_1 - gamma * gradient
     return loss, w
 
-def learning_by_reg_gradient_descent(y, tx, lambda_, w, gamma):
+def reg_logistic_by_gd(y, tx, lambda_, w, gamma):
     """Do one step of gradient descent using logistic regression.
     Return the loss and the updated w.
     """

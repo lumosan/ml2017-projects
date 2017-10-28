@@ -30,7 +30,8 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, return_all=False):
     else:
         return w, loss
 
-def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, return_all=False):
+def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma,
+    return_all=False):
     """Stochastic gradient descent algorithm. Returns .5 * MSE as loss."""
     w = initial_w
     if return_all:
@@ -78,10 +79,12 @@ def ridge_regression(y, tx, lambda_):
     inv = np.linalg.inv(tx.T.dot(tx) + 2 * tx.shape[1] * lambda_ * I)
     w_opt = inv.dot(tx.T).dot(y)
     # compute ridge regression loss
-    loss = compute_mse(y, tx, w_opt) + lambda_ / tx.shape[1] * w_opt.T.dot(w_opt)
+    loss = compute_mse(y, tx, w_opt) + (lambda_ / tx.shape[1] *
+        w_opt.T.dot(w_opt))
     return w_opt, loss
 
-def logistic_regression(y, tx, initial_w, max_iters, gamma, batch_size=1000, return_all=False):
+def logistic_regression(y, tx, initial_w, max_iters, gamma,
+    batch_size=1000, return_all=False):
     """Logistic regression using mini-batch gradient descent."""
     if len(tx.shape) == 1:
         tx = tx.reshape(-1, 1)
@@ -114,8 +117,8 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, batch_size=1000, ret
         return w, loss
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma,
-    return_all=False):
-    """Regularized logistic regression using gradient descent"""
+    batch_size=1000, return_all=False):
+    """Regularized logistic regression using mini-batch gradient descent"""
     if len(tx.shape) == 1:
         tx = tx.reshape(-1, 1)
     if len(y.shape) == 1:
@@ -129,15 +132,18 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma,
         losses = []
 
     for n_iter in range(max_iters):
+        # get batch
+        y_n, tx_n = get_batch(y, tx, batch_size)
         # get loss and update w by gradient
-        loss, w = learning_by_reg_gradient_descent(y, tx, lambda_, w, gamma)
+        loss, w = reg_logistic_by_gd(y_n, tx_n, lambda_, w, gamma)
 
         if return_all:
         # store w and loss
             ws.append(w)
             losses.append(loss)
             if n_iter % 100 == 0:
-                print("Current iteration={i}, loss={l}".format(i=n_iter, l=loss))
+                print("Current iteration={i}, loss={l}".format(
+                    i=n_iter, l=loss))
 
     # return w and loss, either all or only last ones
     if return_all:
