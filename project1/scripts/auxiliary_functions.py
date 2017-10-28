@@ -33,6 +33,8 @@ def build_poly(x, degree, offset=True):
         for r in xT:
             tx_r = np.power(r[rows], cols+1)
             tx = np.concatenate([tx, tx_r], axis=1)
+        if not offset:
+            tx = tx[:,1:]
     return tx
 
 def build_model_data(x, y):
