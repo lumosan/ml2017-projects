@@ -67,7 +67,7 @@ def sigmoid(t):
     t_exp = np.exp(t)
     return t_exp / (t_exp + 1)
 
-def learning_by_gradient_descent(y, tx, w, gamma):
+def logistic_by_gd(y, tx, w, gamma):
     """Do one step of gradient descent using logistic regression.
     Return the loss and the updated w.
     """
@@ -95,3 +95,10 @@ def learning_by_reg_gradient_descent(y, tx, lambda_, w, gamma):
     w_1 = w
     w = w_1 - gamma * gradient
     return loss, w
+
+
+def get_batch(y, tx, batch_size):
+    m = tx.shape[0]
+    p = np.random.permutation(np.arange(m))
+    tx_p, y_p = tx[p], y[p]
+    return y_p[:batch_size], tx_p[:batch_size,:]

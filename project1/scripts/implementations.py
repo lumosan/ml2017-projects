@@ -3,7 +3,7 @@ import numpy as np
 from auxiliary_functions import *
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma, return_all=False):
-    """Linear regression using gradient descent. Returns .5*MSE as loss"""
+    """Linear regression using gradient descent. Returns .5*MSE as loss."""
     w = initial_w
     if return_all:
         # create arrays for w and losses
@@ -31,7 +31,7 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, return_all=False):
         return w, loss
 
 def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, return_all=False):
-    """Stochastic gradient descent algorithm. Returns .5 * MSE as loss"""
+    """Stochastic gradient descent algorithm. Returns .5 * MSE as loss."""
     w = initial_w
     if return_all:
         # create arrays for w and losses
@@ -62,7 +62,7 @@ def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, return_all
 
 def least_squares(y, tx):
     """Least squares regression using normal equations.
-    Returns the optimal weights and MSE
+    Returns the optimal weights and MSE.
     """
     # calculate w opt using normal equations
     w_opt = np.linalg.pinv(tx).dot(y)
@@ -70,8 +70,6 @@ def least_squares(y, tx):
     loss = compute_mse(y, tx, w_opt)
     return w_opt, loss
 
-# TODO: Differentiate cases when tx includes offset column and when it doesn't?
-# TODO: Check the loss...
 def ridge_regression(y, tx, lambda_):
     """Implements ridge regression using normal equations."""
     # create identity matrix
@@ -83,8 +81,8 @@ def ridge_regression(y, tx, lambda_):
     loss = compute_mse(y, tx, w_opt) + lambda_ / tx.shape[1] * w_opt.T.dot(w_opt)
     return w_opt, loss
 
-def logistic_regression(y, tx, initial_w, max_iters, gamma, return_all=False):
-    """Logistic regression using gradient descent"""
+def logistic_regression(y, tx, initial_w, max_iters, gamma, batch_size=1000, return_all=False):
+    """Logistic regression using mini-batch gradient descent."""
     if len(tx.shape) == 1:
         tx = tx.reshape(-1, 1)
     if len(y.shape) == 1:
@@ -98,8 +96,10 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, return_all=False):
         losses = []
 
     for n_iter in range(max_iters):
+        # get batch
+        y_n, tx_n = get_batch(y, tx, batch_size)
         # get loss and update w by gradient
-        loss, w = learning_by_gradient_descent(y, tx, w, gamma)
+        loss, w = logistic_by_gd(y_n, tx_n, w, gamma)
         if return_all:
             # store w and loss
             ws.append(w)
