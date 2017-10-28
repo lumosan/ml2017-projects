@@ -30,23 +30,20 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma, return_all=False):
     else:
         return w, loss
 
-def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma,
-    seed=13, return_all=False):
+def least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma, return_all=False):
     """Stochastic gradient descent algorithm. Returns .5 * MSE as loss"""
-    random.seed(seed)
     w = initial_w
     if return_all:
         # create arrays for w and losses
         ws = [w]
         losses = []
     for n_iter in range(max_iters):
+        # get batch
+        y_n, tx_n = get_batch(y, tx, batch_size)
+        # compute gradient and loss
         w_1 = w
-        # compute gradient and loss, for a random nth sample
-        n = np.random.randint(0, np.shape(y)[0])
-        grad_aux = y[n] - tx[n].dot(w)
-        gradient = -(tx[n].dot(grad_aux))
-        loss = .5 * compute_mse(y, tx, w)
-
+        gradient = (tx_n.T.dot(tx_n.dot(w) - y_n)) / len(y_n)
+        loss = .5 * compute_mse(y_n, tx_n, w)
         # update w by gradient
         w = w_1 - gamma * gradient
 
