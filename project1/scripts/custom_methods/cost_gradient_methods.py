@@ -1,6 +1,6 @@
 # Cost and gradient computation functions
 import numpy as np
-#from auxiliary_methods import *
+from custom_methods.auxiliary_methods import *
 
 
 def compute_mse(y, tx, w):

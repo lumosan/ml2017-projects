@@ -58,4 +58,4 @@ w, test_poly_tx = run_logistic_regression(x_1, test_x_1, Y, 5, 1500,
 
 # predict labels and generate submission file
 test_y_pred = predict_labels_bis(w, test_poly_tx)
-create_csv_submission(test_ids, test_y_pred, DATA_PATH+'submission.csv')
+create_csv_submission(test_ids, test_y_pred, DATA_PATH+'submission_lr.csv')

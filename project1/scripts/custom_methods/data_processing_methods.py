@@ -1,8 +1,8 @@
 # Data processing functions
 import numpy as np
 
-#from standardizing_methods import *
-#from data_processing_methods import *
+from custom_methods.standardizing_methods import *
+from custom_methods.data_processing_methods import *
 
 
 def build_poly(x, degree, offset=True):
