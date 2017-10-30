@@ -81,7 +81,7 @@ Before running the script make sure you do the following:
 
 Since our script doesn't receive any special arguments, the above should suffice to reproduce our results - and output them into a new file, `submission.csv`, automatically written to the `data` directory.
 
-## 5. Authors
+## 4. Authors
 
 * **Lucía Montero Sanchis**
 * **Nuno Mota Gonçalves**
