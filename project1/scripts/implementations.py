@@ -1,6 +1,6 @@
 # Implementations of the functions from exercise sessions
 import numpy as np
-from auxiliary_functions import *
+from custom_methods import auxiliary_methods, cost_gradient_methods, cross_validation_methods, data_processing_methods, proj1_helpers, standardizing_methods
 
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma, return_all=False):

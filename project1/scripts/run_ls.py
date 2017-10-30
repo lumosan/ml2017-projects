@@ -1,7 +1,13 @@
 # run.py
 import numpy as np
 import matplotlib.pyplot as plt
-from custom_methods import *
+#from custom_methods import auxiliary_methods, cost_gradient_methods, cross_validation_methods, data_processing_methods, proj1_helpers, standardizing_methods
+from custom_methods.auxiliary_methods import *
+from custom_methods.cost_gradient_methods import *
+from custom_methods.cross_validation_methods import *
+from custom_methods.data_processing_methods import *
+from custom_methods.proj1_helpers import *
+from custom_methods.standardizing_methods import *
 from implementations import least_squares
 
 ## Read data
@@ -46,4 +52,4 @@ w, test_poly_tx = run_least_squares(x_1, test_x_1, Y, 8)
 
 # predict labels and generate submission file
 test_y_pred = predict_labels_bis(w, test_poly_tx)
-create_csv_submission(test_ids, test_y_pred, DATA_PATH+'submission.csv')
+create_csv_submission(test_ids, test_y_pred, DATA_PATH+'submission_ls.csv')
