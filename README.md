@@ -4,7 +4,7 @@ This README file explains the provided files' structure and hierarchy, along wit
 
 ## 1. File hierarchy
 
-The different files are organized like in the tree structure below. The two main folders, `scripts` and `data`, separate our code from our resources. The `custom_methods` directory, inside `scripts`, contains all the methods `run.py` depends on.
+The different files are organized like in the tree structure below. The two main folders, `scripts` and `data`, separate our code from our resources.
 
 ```
 .
@@ -28,7 +28,7 @@ The different files are organized like in the tree structure below. The two main
 
 ## 2. Files' content
 
-Inside the `custom_methods` directory you will find all the files our script depends on.
+Each and every script contained in `custom_methods` is presented below:
 
     1. auxiliary_methods.py
         * (What is contains)
@@ -42,6 +42,8 @@ Inside the `custom_methods` directory you will find all the files our script dep
         * (What is contains)
     6. standardizing_methods.py
         * (What it contains)
+
+Along with `implementations.py`, that (What it contains), these scripts represent the dependencies of `run.py`.
 
 ## 3. Running the script
 
