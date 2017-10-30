@@ -1,19 +1,10 @@
-# Project 1
+# Project #1
 
-In this project we developed the first ML concepts seen in class. We have done exploratory data analysis to understand the dataset and the
-features, done feature processing and engineering to clean the dataset and extract more meaningful information,
-implemented and use machine learning methods on real data, analyze the model and generate predictions using
-those methods.
+This README file explains the provided files' structure and hierarchy, along with an understandable description of their functionalities and use.
 
-## Getting Started
+## 1. File hierarchy
 
-These instructions will make sure the the files provided in a certain structure are understandable.
-
-### File tree
-
-The different files are organized in the tree structure shown beow. The two main folders separate the data from the code. It is necessary to have the CSV data files in the correct location for the script to compute them. The resulting submission file will also be released in this location.
-The `scripts` folder contains the code. The `custum_methods` folder contains all the auxiliary functions the computation need.
-At the end, the script is run thanks to the `run.py` file
+The different files are organized like in the tree structure below. The two main folders, `scripts` and `data`, separate the our code from our resources. Inside `scripts`, the `custom_methods` folder contains all the auxiliary functions our script, `run.py`, needs.
 
 ```
 .
@@ -35,23 +26,41 @@ At the end, the script is run thanks to the `run.py` file
     └── run.py
 ```
 
-## Running the script
+## 2. Files' content
 
-Given the folder structure explained before, running the python script is straightforward. Using the ... just run the script as follow
+Inside the `custom_methods` directory you will find all the files our script depends on.
 
-```
-> python run.py
-```
+    1. auxiliary_methods.py
+        * (What is contains)
+    2. cost_gradient_methods.py
+        * (What it contains)
+    3. cross_validation_methods.py
+        * (What is contains)
+    4. data_processing_methods.py
+        * (What it contains)
+    5. proj1_helpers.py
+        * (What is contains)
+    6. standardizing_methods.py
+        * (What it contains)
 
-## Deployment
+## 3. Running the script
 
-Add additional notes about how to deploy this on a live system
+### 3.1. Pre-requisites
 
-## Versioning
+Before running the script make sure you do the following:
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+* Have `train.csv` and `test.csv` in the `data` directory
+* Have Python installed and running on your machine
 
-## Authors
+### 3.2. Running
+
+    1. Open your terminal
+    2. Navigate inside our `scripts` directory
+    3. Run "python run.py"
+
+Since our script doesn't receive any special arguments, the above should suffice to reproduce our results - and output them into a new file, `submission.csv`, automatically written to the `data` directory.
+
+## 5. Authors
 
 * **Lucía Montero Sanchis**
 * **Nuno Mota Gonçalves**
