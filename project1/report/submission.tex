@@ -21,95 +21,109 @@
 \end{abstract}
 
 \section{Introduction}
-The aim of this project is to classify the data in the CERN database in two different classes, for finding the Higgs boson. This task will be carried out applying the machine learning methods learned during the course, together with the improvements that we have considered the most appropriate to overcome the challenges of this assignment. Some of the challenges of this classification process include parsing the missing information in the database, properly dealing with a large number of features and samples, and choosing the learning method that is the most suitable.
+	The aim of this project is to classify the data in the CERN database in two different classes, for finding the Higgs boson. This task will be carried out applying the machine learning methods learned during the course, together with the improvements that we have considered the most appropriate to overcome the challenges of this assignment. Some of the challenges of this classification process include parsing the missing information in the database, properly dealing with a large number of features and samples, and choosing the learning method that is the most suitable.
 
-The learning algorithms we focus on are least squares and logistic regression, being the latter the most adequate for classification. The possibility of including a regularization factor is considered in order to avoid overfitting. We expand the features by including a polynomial basis up to a certain degree, to achieve a higher precision in the classification. We also use Principal Component Analysis (PCA) to obtain a smaller number of linearly uncorrelated variables.
+	The learning algorithms we focus on are least squares and logistic regression, being the latter the most adequate for classification. The possibility of including a regularization factor is considered in order to avoid overfitting. We expand the features by including a polynomial basis up to a certain degree, to achieve a higher accuracy in the classification. We also use Principal Component Analysis (PCA) to obtain a smaller number of linearly uncorrelated variables.
 
-%We start by presenting the models and methods used in section \ref{sec:models-methods}. We then include the results obtained, and discuss them in section \ref{sec:discussion}.
+	%We start by presenting the models and methods used in section \ref{sec:models-methods}. We then include the results obtained, and discuss them in section \ref{sec:discussion}.
 
 \section{Models and methods}
-\label{sec:models-methods}
-\subsection{Initial data parsing} % (fold)
-\label{sub:initial_data_parsing}
-  The Higgs boson database contains $250000$ observations and $30$ features or variables. These variables take values in different ranges. Certain features contain the value $-999$ for some of the observations, which we have considered to represent \emph{missing information}. %In some cases up to 29\% of the total observed data for a variable is missing.
+	\label{sec:models-methods}
+	\subsection{Initial data parsing} % (fold)
+	\label{sub:initial_data_parsing}
+  	The Higgs boson database contains $250000$ observations and $30$ features or variables. These variables take values in different ranges. Certain features contain the value $-999$ for some of the observations, which we have considered to represent \emph{missing information}. %In some cases up to 29\% of the total observed data for a variable is missing.
 
-  Before applying a learning algorithm we verify that all the features are standardized so that they are considered equally. Otherwise this could have a negative effect on the ability to learn, especially with methods such as ridge regression. To standardize the features we have substracted the mean and then divided by the standard deviation. For the variables with missing information, both the mean and the standard deviation have been computed considering only the non-missing values. Afterwards the missing values have been set to $0$ so that they do not affect the mean of the variable nor modify its scale.
+  	Before applying a learning algorithm we verify that all the features are standardized so that they are considered equally. Otherwise this could have a negative effect on the ability to learn, especially with methods such as ridge regression. To standardize the features we have substracted the mean and then divided by the standard deviation. For the variables with missing information, both the mean and the standard deviation have been computed considering only the non-missing values. Afterwards the missing values have been set to $0$ so that they do not affect the mean of the variable nor modify its scale.
 
-  When standardizing the test data we have used the mean and the standard deviation obtained for the training data. This makes sure that both datasets are transformed in the same way. However, this should not make a big difference since the distribution of the training and test data is assumed to be the same.
-% subsection initial_data_parsing (end)
+  	When standardizing the test data we have used the mean and the standard deviation obtained for the training data. This makes sure that both datasets are transformed in the same way. However, this should not make a big difference since the distribution of the training and test data is assumed to be the same.
+	% subsection initial_data_parsing (end)
 
-\subsection{Polynomial basis} % (fold)
-\label{sub:polynomial_basis}
-  To improve the precision in the classification we have increased the amount of explanatory variables by building a polynomial basis. We have expanded the features by including the powers of each of the original variables up to a certain chosen degree. Since the newly included variables may have a different standard deviation, we have normalized them afterwards to make sure that their standard deviation is $1$. We also include an offset term, because the variable that we want to predict might have an offset.
-% subsection polynomial_basis (end)
+	\subsection{Polynomial basis} % (fold)
+	\label{sub:polynomial_basis}
+  	To improve the accuracy in the classification we have increased the amount of explanatory variables by building a polynomial basis. We have expanded the features by including the powers of each of the original variables up to a certain chosen degree. Since the newly included variables may have a different standard deviation, we have normalized them afterwards to make sure that their standard deviation is $1$. We also include an offset term, because the variable that we want to predict might have an offset.
+	% subsection polynomial_basis (end)
 
-\subsection{Principal Component Analysis (PCA)} % (fold)
-\label{sub:principal_component_analysis}
-  The total number of features increases considerably for polynomial basis with a large degree. In these cases we reduce the dimensionality $d$ of the feature space using PCA.
+	\subsection{Principal Component Analysis (PCA)} % (fold)
+	\label{sub:principal_component_analysis}
+  	The total number of features increases considerably for polynomial basis with a large degree. In these cases we reduce the dimensionality $d$ of the feature space using PCA.
 
-  As specified in \cite{smith02}, to do so we start by finding the covariance matrix of the features. We then compute the eigenvalues and eigenvectors. The eigenvectors form a basis for the data, and they can be sorted in order of \emph{decreasing} eigenvalue. We can then select a subset of the first $L\leq d$ eigenvectors as basis vectors.
+  	As specified in \cite{smith02}, to do so we start by finding the covariance matrix of the features. We then compute the eigenvalues and eigenvectors. The eigenvectors form a basis for the data, and they can be sorted in order of \emph{decreasing} eigenvalue. We can then select a subset of the first $L\leq d$ eigenvectors as basis vectors.
 
-  This allows to compare the results achieved by building a polynomial base with a larger degree and then reducing dimensionality by applying PCA, with the results achieved for a polynomial basis of a lower degree.
-% subsection principal_component_analysis (end)
+  	This allows to compare the results achieved by building a polynomial base with a larger degree and then reducing dimensionality by applying PCA, with the results achieved for a polynomial basis of a lower degree.
+	% subsection principal_component_analysis (end)
 
-\subsection{Least squares and Ridge regression} % (fold)
-\label{sub:least_squares_and_ridge_regression}
-  We start by classifying using least squares. Since it is possible to have overfitting, we consider the possibility of using ridge regression. However, the ridge regression method implemented penalizes the offset of the model, which might decrease the precision of the predictions.
+	\subsection{Least squares and Ridge regression} % (fold)
+	\label{sub:least_squares_and_ridge_regression}
+  	We start by classifying using least squares. Since it is possible to have overfitting, we consider the possibility of using ridge regression. However, the ridge regression method implemented penalizes the offset of the model, which might decrease the accuracy of the predictions.
+	% subsection least_squares_and_ridge_regression (end)
 
-% subsection least_squares_and_ridge_regression (end)
+	\subsection{Logistic regression and Regularized logistic regression} % (fold)
+	\label{sub:logistic_regression_and_regularized_logistic_regression}
+  	We focus on using this method, since it is more suitable for classifying. For the logistic regression with stochastic gradient descent algorithm we have first considered a constant learning rate $\lambda$, and then an adaptive one $\lambda^{(t)}$ as shown in \ref{eq:lr}, where $t$ is the iteration.
 
-\subsection{Logistic regression and Regularized logistic regression} % (fold)
-\label{sub:logistic_regression_and_regularized_logistic_regression}
-  We focus on using this method, since it is more suitable for classifying. For the logistic regression with stochastic gradient descent algorithm we have first considered a constant learning rate $\lambda$, and then an adaptive one $\lambda^{(t)}$ as shown in \ref{eq:lr}, where $t$ is the iteration.
+  	\begin{equation}
+    	\label{eq:lr}
+      	\lambda^{(t)} = \eta \cdot t ^{- \kappa}
+  	\end{equation}
 
-  \begin{equation}
-    \label{eq:lr}
-      \lambda^{(t)} = \eta \cdot t ^{- \kappa}
-  \end{equation}
+  	Although by using an adaptive learning rate we increase the number of hyperparameters to adjust, the convergence improves.
+  	As for least squares, there is a possibility of overfitting when considering a large degree for the polynomial basis. In this case we would use regularized logistic regression, which would result into a third hyperparameter to adjust. The regularization implementation in this case does not penalize the offset term of the model, solving the problem mentioned previously.
+	% subsection logistic_regression_and_regularized_logistic_regression (end)
 
-  Although by using an adaptive learning rate we increase the number of hyperparameters to adjust, the convergence improves.
-  As for least squares, there is a possibility of overfitting when considering a large degree for the polynomial basis. In this case we would use regularized logistic regression, which would result into a third hyperparameter to adjust. The regularization implementation in this case does not penalize the offset term of the model, solving the problem mentioned previously.
-% subsection logistic_regression_and_regularized_logistic_regression (end)
+	\subsection{Cross validation and hyperparameters tuning} % (fold)
+	\label{sub:cross_validation_and_hyperparameters_tuning}
+  	For the cross validation we have considered $80\%$ of the data for training and $20\%$ for test. Out of the \emph{training} data, $80\%$ has been used for training and the remaning $20\%$ for validation (i.e. for choosing the values of the hyperparameters). To compare the classification errors for each model, we have defined the accuracy as the ratio of correct predictions.
 
-\subsection{Cross validation and hyperparameters tuning} % (fold)
-\label{sub:cross_validation_and_hyperparameters_tuning}
-  For the cross validation we have considered $80\%$ of the data for training and $20\%$ for test. Out of the \emph{training} data, $80\%$ has been used for training and the remaning $20\%$ for validation (i.e. for choosing the values of the hyperparameters).
-
-  We have chosen the parameters for the adaptive learning rate $\lambda^{(t)}$ and the regularization factor $\gamma$ by using a random layout (random search), instead of grid search.
-% subsection cross_validation_and_hyperparameters_tuning (end)
-
-%\begin{equation}
-  %\label{eq:a}
-    %w^{(t+1)} = w^{(t)} - \gamma \nabla L(w^{(t)})
-%\end{equation}
-
-%\begin{equation}
-  %\label{eq:b}
-  %L(w) = \frac{1}{2N}\sum{(y_n - x_n^T w)^2} + \lambda \|w\|_{2}^2
-%\end{equation}
+  	We have chosen the parameters for the adaptive learning rate $\lambda^{(t)}$ and the regularization factor $\gamma$ by using a random layout (random search), instead of grid search.
+	% subsection cross_validation_and_hyperparameters_tuning (end)
 
 \section{Results}
 \label{sec:results}
-TODO
-Least squares (y Ridge regression??)
-- valores de training/val/test para least squares-> hay overfitting?
-si lo hay, mirar ridge regression y sacar la grafica para distintos factores de regularizacion (TODO? ridge regression que no penalice offset).
+  \subsection{Least squares} % (fold)
+  \label{sub:least_squares}
+    We have first predicted the classes for the test data using least squares, that we implement using the normal equations. We build the polynomial basis with degrees $2$ to $8$ for the training data, and then apply least squares. Figure \ref{fig:1LSprec} shows the accuracy obtained for the training, validation and test data for each maximum degree.
 
-Logistic regression. We used batch size of 2000, limitado por un numero de iteraciones de ...?.ogistic regression with stochastic gradient descent.
-Para degrees de 1 a 4, y con o sin los 50\% mas relevantes de PCA. Decir lambdas utilizadas (los dos valores, tabla?). Comparar errores de training, test y validation para las 8 opciones. Con eso, decidir si usamos regularized logistic o no.
-(Regularized logistic regression? decir lambda y factor de regularizacion usado, y en que rango se han buscado.)
+    \begin{figure}[htp]
+      \centering
+      \includegraphics[width=.6\textwidth]{1LSprec}
+      \caption{Accuracy achieved using Least squares for polynomial basis of different degrees}
+      \label{fig:1LSprec}
+    \end{figure}
+
+    It can be seen that the accuracy increases for larger maximum degrees, which is coherent with the intuition that for larger degrees there are more features to consider when fitting the model. It can be seen as well that the increase in accuracy with respect to the degree gets lower as the degree gets larger, and that the difference in using degree $7$ or $8$ is quite small. We also observe that there does not seem to be an overfitting, since the difference in precision between the training and the validation-test predictions do not seem large. Therefore we do not need to use ridge regression to include a regularization term.
+  % subsection least_squares (end)
+  \subsection{Logistic regression} % (fold)
+  \label{sub:logistic_regression}
+    We then use the logistic regression Stochastic Gradient Descent (SGD) algorithm, in batches of $2000$ and with $1500$ iterations. As explained previously, we use an adaptive learning rate that is defined by two hyperparameters. In this case, the values are $\eta = 10^{-2}$ and $\kappa = 0.8$.
+
+    Figure \ref{fig:2LRprec} shows the accuracy obtained for the training, validation and test data for each maximum degree using logistic regression.
+
+    \begin{figure}[htp]
+      \centering
+      \includegraphics[width=.6\textwidth]{2LRprec}
+      \caption{Accuracy achieved using Logistic regression for polynomial basis of different degrees}
+      \label{fig:2LRprec}
+    \end{figure}
+
+    In this case we can again see that the accuracy increases with the degree of the polynomial, and that the model does not seem to overfit. Therefore, we do not include a regularization factor. As seen with least squares, the increment in accuracy is smaller for the largest degrees.
+  % subsection logistic_regression (end)
+  \subsection{Principal component analysis} % (fold)
+  \label{sub:principal_component_analysis}
+    TODO
+  % subsection principal_component_analysis (end)
 
 \section{Discussion}
 \label{sec:discussion}
- As explained previously, this offset is required due to the characteristics of the variable that we want to predict.  Therefore, we need to bear in mind that it is possible that the precision obtained using ridge regression is lower than using least squares. (ridge vs ls)
-TODO Adaptive lambda
-Hay o no hay overfitting (en least squares y en logistic regression)
-Es mejor usar degrees mas bajos y no aplicar PCA. Mirar para cada degree.
+  In the results section we have shown that the accuracy obtained higher when considering a polynomial basis of a larger degree. However, it has been shown as well that this difference in accuracy is larger when the degrees being compared are small. For instance, when using least squares it is not clear if it is worth it to consider a basis of degree $8$ as compared to using a basis of degree $7$. It is interesting as well to note that we did not find cases of overfitting when using either least squares or logistic regression.
+
+  We also found that although we expected the logistic regression algorithm to perform better than least squares, both achieve a similar accuracy for a same degree of polynomial. In fact, for some degrees least squares outperforms logistic regression. A possible reason for this is that we are obtaining the analytical solution for the least squares algorithm, whereas for logistic regression we have estimated it by choosing a series of parameters (learning rate, number of iterations, and size of the batch for SGD).
+
+  TODO: algo de PCA
 
 \section{Summary}
 \label{sec:tips-writing}
 
-TODO Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at magna sodales, posuere enim id, vulputate mi. Praesent tristique augue nec augue mattis, eu rhoncus eros rhoncus. Donec pellentesque, lectus a lacinia condimentum, turpis mi consectetur sem, nec scelerisque lorem ex non tortor. Vestibulum ut dictum orci, sit amet auctor nisl. Aenean ullamcorper nulla eu velit sodales, iaculis suscipit ligula pulvinar. Quisque varius auctor tellus, vel commodo tellus volutpat non. Praesent augue neque, ultricies at nulla vitae, pellentesque rutrum velit. Sed fermentum arcu lorem, eu pulvinar diam pellentesque eu.
+TODO
 
 \bibliographystyle{IEEEtran}
 \bibliography{literature}
