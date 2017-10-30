@@ -16,7 +16,7 @@
 \maketitle
 
 \begin{abstract}
-  In this report we present the results of applying the least squares and logistic regression methods to the Higgs boson dataset for classification purposes. These methods are analyzed and compared for different polynomial basis degrees of the input data. We also consider applying principal component analysis to reduce the dimensionality of the feature space.
+  This report presents the results of applying least squares and logistic regression to the Higgs boson dataset for classification purposes. These methods are analyzed and compared for different polynomial basis degrees of the input data. We also consider applying principal component analysis to reduce the dimensionality of the feature space.
 \end{abstract}
 
 \section{Introduction}
@@ -32,7 +32,7 @@
 	\label{sub:initial_data_parsing}
   	The Higgs boson dataset contains $250000$ observations and $30$ features or variables. These variables take values in different ranges. Certain features contain the value $-999$ for some of the observations, which we have considered to represent \emph{missing information}. %In some cases up to 29\% of the total observed data for a variable is missing.
 
-  	Before applying a learning algorithm we verify that all the features are standardized so that they are considered equally to avoid a negative effect on the ability to learn. To standardize the features we substract the mean and divide by the standard deviation. For the variables with missing information, the mean and the standard deviation are computed only over the non-missing values. Afterwards the missing values are set to $0$ so that they do not modify the scale of the variable. When standardizing the test data we used the mean and the standard deviation of the train data. This assures the same transformation to both datasets, although it should not make a big difference since the distribution of the training and test data is assumed to be the same.
+  	Before applying a learning algorithm we verify that the features are standardized,  so that they are considered equally. To standardize the features we substract the mean and divide by the standard deviation. For the variables with missing information, the mean and the standard deviation are computed only over the non-missing values. Afterwards the missing values are set to $0$ so that they do not modify the scale of the variable. When standardizing the test data we used the mean and the standard deviation of the train data. This assures the same transformation to both datasets, although it should not make a big difference since the distribution of the training and test data is assumed to be the same.
 	% subsection initial_data_parsing (end)
 
 	\subsection{Polynomial basis} % (fold)
