@@ -32,6 +32,20 @@ def predict_labels(weights, data):
 
     return y_pred
 
+def predict_labels_bis(weights, data, return_zeros=False):
+    """Generates class predictions given weights and a test data matrix.
+    It asummes that the model generates the prediction using classes
+    0 and 1. It can return labels 0 and 1, or -1 and 1 depending on the
+    value of return_zeros.
+    """
+    y_pred = np.dot(data, weights)
+    if return_zeros:
+        y_pred[np.where(y_pred <= 0.5)] = 0
+    else:
+        y_pred[np.where(y_pred <= 0.5)] = -1
+    y_pred[np.where(y_pred > 0.5)] = 1
+
+    return y_pred
 
 def create_csv_submission(ids, y_pred, name):
     """
