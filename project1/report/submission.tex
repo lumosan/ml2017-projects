@@ -88,7 +88,7 @@
       %\label{fig:LSLRprec}
     %\end{figure}
 
-    We notice that the accuracy increases for larger maximum degrees but that it also  stabilizes (converges to a theoretical maximum) after a certain point. We also observe that there does not seem to be an over-fitting, since the difference in precision between the training and the validation-test predictions do not seem large.
+    We notice that the accuracy increases for larger maximum degrees but that it also stabilizes after a certain point. We also observe that there does not seem to be an over-fitting, since the difference in precision between the training and the validation-test predictions do not seem large.
 
     \begin{figure}[htp]
       \centering
@@ -102,7 +102,7 @@
 
 \section{Discussion}
 \label{sec:discussion}
-  In the results section we show that for polynomial basis of a larger degree there is a higher accuracy and more features to consider, when fitting the model. Moreover, it has also been shown that this difference in accuracy is larger for lower degree values. For instance, when using \textit{least squares} it is not clear whether or not it is worth it to consider a basis of degree $8$ (over a basis of degree $7$). It is interesting as well to note that we did not find cases of over-fitting when using either \textit{least squares} or \textit{logistic regression}.
+  In the results section we show that for polynomial basis of a larger degree there is a higher accuracy and more features to consider, when fitting the model. Moreover, it has also been shown that this difference in accuracy is larger for lower degree values. For instance, when using \textit{least squares} it is not clear whether or not considering a basis of degree $8$ is better than a basis of degree $7$. It is interesting as well to note that we did not find cases of over-fitting when using either \textit{least squares} or \textit{logistic regression}, probably due to the large size of the dataset.
 
   We also found that, although we expected the \textit{logistic regression} to perform better than \textit{least squares}, both algorithms achieve a similar accuracy for the same polynomial degree. In fact, for some degrees, \textit{least squares} outperforms \textit{logistic regression}. We speculate that this is caused by obtaining the analytical solution for \textit{least squares} versus estimating it for \textit{logistic regression} (by choosing a series of parameters, such as: learning rate, number of iterations and size of the batch for SGD).
 
@@ -110,7 +110,7 @@
 
 \section{Summary}
 \label{sec:tips-writing}
-  The difference in performance for \textit{least squares} and \textit{logistic regression} has not been large enough for us to take any final conclusions about which method is best for classification on this dataset. We have however seen that the accuracy is higher for either a higher degree of the polynomial basis or a higher feature space dimension. Increasing the degree and applying PCA, to reduce the number of features, is not worth it for the cases considered.
+  The difference in performance for \textit{least squares} and \textit{logistic regression} has not been large enough for us to take any final conclusions about which method is best for classification on this dataset. We have however seen that the accuracy is higher for either a higher degree of the polynomial basis or a higher feature space dimension. Increasing the degree and applying PCA, to reduce the number of features, does not improve the results for the cases considered.
 
 \bibliographystyle{IEEEtran}
 \bibliography{literature}
