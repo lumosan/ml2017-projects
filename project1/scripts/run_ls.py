@@ -1,7 +1,6 @@
 # run.py
 import numpy as np
 import matplotlib.pyplot as plt
-#from custom_methods import auxiliary_methods, cost_gradient_methods, cross_validation_methods, data_processing_methods, proj1_helpers, standardizing_methods
 from custom_methods.auxiliary_methods import *
 from custom_methods.cost_gradient_methods import *
 from custom_methods.cross_validation_methods import *
