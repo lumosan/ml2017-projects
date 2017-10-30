@@ -4,7 +4,7 @@ This README file explains the provided files' structure and hierarchy, along wit
 
 ## 1. File hierarchy
 
-The different files are organized like in the tree structure below. The two main folders, `scripts` and `data`, separate the our code from our resources. Inside `scripts`, the `custom_methods` folder contains all the auxiliary functions our script, `run.py`, needs.
+The different files are organized like in the tree structure below. The two main folders, `scripts` and `data`, separate our code from our resources. The `custom_methods` directory, inside `scripts`, contains all the methods `run.py` depends on.
 
 ```
 .
