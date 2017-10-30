@@ -72,34 +72,34 @@
 
 \section{Results}
 \label{sec:results}
-    We first predict the labels for the test data using least squares, that we implement using the normal equations. After building the polynomial basis with degrees $2$ to $8$ for the training data, we apply least squares. Figure \ref{fig:LSLRprec} shows the accuracy obtained for the training, validation and test data for each maximum degree.
-
-    %\begin{figure}[htp]
-      %\centering
-      %\includegraphics[width=.45\textwidth]{1LSprec}
-      %\caption{Accuracy achieved using Least squares}
-      %\label{fig:LSprec}
-    %\end{figure}
+    We first predict the labels for the test data using least squares, that we implement using the normal equations. After building the polynomial basis with degrees $2$ to $8$ for the training data, we apply least squares. Figure \ref{fig:LSprec} shows the accuracy obtained for the training, validation and test data for each maximum degree.
 
     \begin{figure}[htp]
       \centering
-      \includegraphics[width=.45\textwidth]{LSLRprec}
-      \caption{Accuracy achieved using Least squares and Logistic Regression}
-      \label{fig:LSLRprec}
+      \includegraphics[width=.45\textwidth]{LSprec}
+      \caption{Accuracy achieved using Least squares}
+      \label{fig:LSprec}
     \end{figure}
+
+    %\begin{figure}[htp]
+      %\centering
+      %\includegraphics[width=.45\textwidth]{LSLRprec}
+      %\caption{Accuracy achieved using Least squares and Logistic Regression}
+      %\label{fig:LSLRprec}
+    %\end{figure}
 
     The accuracy increases for larger maximum degrees, and the increase in accuracy with respect to the degree gets lower as the degree gets larger. We also observe that there does not seem to be an overfitting, since the difference in precision between the training and the validation-test predictions do not seem large.
 
     We then use the logistic regression Stochastic Gradient Descent (SGD) algorithm, with batch size $2000$ and $1500$ iterations. As explained previously, we use an adaptive learning rate that is defined by two hyperparameters. In this case, the values are $\eta = 10^{-2}$ and $\kappa = 0.8$.
 
-    Figure \ref{fig:LSLRprec} shows the accuracy obtained for the training, validation and test data for each maximum degree using logistic regression.
+    Figure \ref{fig:LRprec} shows the accuracy obtained for the training, validation and test data for each maximum degree using logistic regression.
 
-    %\begin{figure}[htp]
-      %\centering
-      %\includegraphics[width=.45\textwidth]{2LRprec}
-      %\caption{Accuracy achieved using Logistic regression}
-      %\label{fig:LRprec}
-    %\end{figure}
+    \begin{figure}[htp]
+      \centering
+      \includegraphics[width=.45\textwidth]{LRprec}
+      \caption{Accuracy achieved using Logistic regression}
+      \label{fig:LRprec}
+    \end{figure}
 
     In this case we can again see that the accuracy increases with the degree of the polynomial, and that the model does not seem to overfit. Therefore, we do not include a regularization factor. As seen with least squares, the increment in accuracy is smaller for the largest degrees.
 
