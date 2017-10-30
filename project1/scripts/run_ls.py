@@ -1,10 +1,8 @@
 # run.py
 import numpy as np
 import matplotlib.pyplot as plt
-from proj1_helpers import *
-from auxiliary_functions import *
+from custom_methods import *
 from implementations import least_squares
-from implementations import reg_logistic_regression_improved
 
 ## Read data
 DATA_PATH = '../data/'

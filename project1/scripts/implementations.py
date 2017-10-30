@@ -168,7 +168,8 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma,
 def reg_logistic_regression_improved(y, tx, lambda_, initial_w, max_iters,
     gamma, batch_size=1000, return_all=False):
     """Regularized logistic regression using mini-batch gradient descent.
-    Uses adaptive lambda and does not penalize offset."""
+    Uses adaptive lambda and does not penalize offset.
+    """
     if len(tx.shape) == 1:
         tx = tx.reshape(-1, 1)
     if len(y.shape) == 1:
