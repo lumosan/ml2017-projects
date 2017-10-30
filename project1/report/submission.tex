@@ -62,7 +62,7 @@
   	\end{equation}
 
   	Although using an adaptive learning rate increases the amount of hyper-parameters to adjust, the convergence improves.
-  	Since for \textit{least squares} there is a possibility of over-fitting - when considering a large degree for the polynomial basis - we opted for \textit{regularized logistic regression} instead, which adds a third hyper-parameter. The regularization implementation, in this case, does not penalize the offset term of the model, hence solving the problem mentioned previously.
+  	Since there is a possibility of over-fitting - when considering a large degree for the polynomial basis - we contemplated  \textit{regularized logistic regression} instead, which adds a third hyper-parameter. The regularization implementation, in this case, does not penalize the offset term of the model, hence solving the problem mentioned previously.
 	% subsection logistic_regression_and_regularized_logistic_regression (end)
 
 	\subsection{Cross validation and hyper-parameter tuning} % (fold)
