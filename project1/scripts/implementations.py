@@ -120,6 +120,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma,
 
         # get loss and update w by gradient
         loss, w = logistic_by_gd(y_n, tx_n, w, g)
+
         if return_all:
             # store w and loss
             ws.append(w)
