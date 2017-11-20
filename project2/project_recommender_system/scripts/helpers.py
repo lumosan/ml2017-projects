@@ -5,8 +5,9 @@ from itertools import groupby
 
 import numpy as np
 import scipy.sparse as sp
+import csv
 
-
+# Read/Write
 def read_txt(path):
     """read text file from path."""
     with open(path, "r") as f:
@@ -47,6 +48,22 @@ def preprocess_data(data):
     return ratings
 
 
+def create_csv_submission(ids, y_pred, name):
+    """Creates an output file in csv format for submission to kaggle
+    Arguments: ids (event ids associated with each prediction)
+               y_pred (predicted rating)
+               name (string name of .csv output file to be created)
+    """
+    with open(name, 'w') as csvfile:
+        fieldnames = ['Id', 'Prediction']
+        writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
+        writer.writeheader()
+        for r1, r2 in zip(ids, y_pred):
+            writer.writerow({'Id':r1,'Prediction':r2})
+
+            
+
+
 def group_by(data, index):
     """group list of list by a specific index."""
     sorted_data = sorted(data, key=lambda x: x[index])
@@ -73,3 +90,5 @@ def calculate_mse(real_label, prediction):
     """calculate MSE."""
     t = real_label - prediction
     return 1.0 * t.dot(t.T)
+
+
