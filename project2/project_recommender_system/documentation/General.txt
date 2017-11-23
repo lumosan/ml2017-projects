@@ -20,7 +20,8 @@ From here on, use regularization! Better Ridge, maybe Lasso.
     * Find sets of similar users
     * Find sets of similar items
     * Correlation/Cosine similarity suggested in post (one for users, one for items)
-* Matrix factorization. For sparse matrices. Non-negative elements. Missing elements are not the same as elements equal to 0. (!!!)
+   
+* Matrix factorization. For sparse matrices. Non-negative elements. Missing elements are not the same as elements equal to 0. Low-rank approximation as explained in https://beckernick.github.io/matrix-factorization-recommender/? (!!!)
     * Standard SVD `surprise.prediction_algorithms.matrix_factorization.SVD`
     * Asymmetric SVD
     * SVD++ `surprise.prediction_algorithms.matrix_factorization.SVDpp`
