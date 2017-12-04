@@ -428,6 +428,13 @@ Mean RMSE: 1.0033
 
 
 
+[{'n_cltr_u': 30, 'n_cltr_i': 3, 'n_epochs': 100}]
+------------
+Parameters combination 1 of 1
+params:  {'n_cltr_u': 30, 'n_cltr_i': 3, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0035
+------------
 
 
 [{'n_cltr_u': 30, 'n_cltr_i': 2, 'n_epochs': 100}]
@@ -436,4 +443,59 @@ Parameters combination 1 of 1
 params:  {'n_cltr_u': 30, 'n_cltr_i': 2, 'n_epochs': 100}
 ------------
 Mean RMSE: 1.0037
+------------
+
+
+[{'n_cltr_u': 40, 'n_cltr_i': 3, 'n_epochs': 100}, {'n_cltr_u': 50, 'n_cltr_i': 3, 'n_epochs': 100}]
+------------
+Parameters combination 1 of 2
+params:  {'n_cltr_u': 40, 'n_cltr_i': 3, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0032
+------------
+------------
+Parameters combination 2 of 2
+params:  {'n_cltr_u': 50, 'n_cltr_i': 3, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0026
+------------
+
+
+
+[{'n_cltr_u': 60, 'n_cltr_i': 3, 'n_epochs': 100}, {'n_cltr_u': 60, 'n_cltr_i': 2, 'n_epochs': 100}, {'n_cltr_u': 75, 'n_cltr_i': 3, 'n_epochs': 100}, {'n_cltr_u': 75, 'n_cltr_i': 2, 'n_epochs': 100}, {'n_cltr_u': 90, 'n_cltr_i': 3, 'n_epochs': 100}, {'n_cltr_u': 90, 'n_cltr_i': 2, 'n_epochs': 100}]
+------------
+Parameters combination 1 of 6
+params:  {'n_cltr_u': 60, 'n_cltr_i': 3, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0030
+------------
+------------
+Parameters combination 2 of 6
+params:  {'n_cltr_u': 60, 'n_cltr_i': 2, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0033
+------------
+------------
+Parameters combination 3 of 6
+params:  {'n_cltr_u': 75, 'n_cltr_i': 3, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0025
+------------
+------------
+Parameters combination 4 of 6
+params:  {'n_cltr_u': 75, 'n_cltr_i': 2, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0033
+------------
+------------
+Parameters combination 5 of 6
+params:  {'n_cltr_u': 90, 'n_cltr_i': 3, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0029
+------------
+------------
+Parameters combination 6 of 6
+params:  {'n_cltr_u': 90, 'n_cltr_i': 2, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0035
 ------------
