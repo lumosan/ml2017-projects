@@ -1,0 +1,501 @@
+------------
+Parameters combination 1 of 64
+params:  {'n_cltr_u': 2, 'n_cltr_i': 2, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0085
+------------
+------------
+Parameters combination 2 of 64
+params:  {'n_cltr_u': 2, 'n_cltr_i': 3, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0088
+------------
+------------
+Parameters combination 3 of 64
+params:  {'n_cltr_u': 2, 'n_cltr_i': 4, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0105
+------------
+------------
+Parameters combination 4 of 64
+params:  {'n_cltr_u': 2, 'n_cltr_i': 6, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0097
+------------
+------------
+Parameters combination 5 of 64
+params:  {'n_cltr_u': 2, 'n_cltr_i': 10, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0107
+------------
+------------
+Parameters combination 6 of 64
+params:  {'n_cltr_u': 2, 'n_cltr_i': 20, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0111
+------------
+------------
+Parameters combination 7 of 64
+params:  {'n_cltr_u': 2, 'n_cltr_i': 30, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0108
+------------
+------------
+Parameters combination 8 of 64
+params:  {'n_cltr_u': 2, 'n_cltr_i': 40, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0103
+------------
+------------
+Parameters combination 9 of 64
+params:  {'n_cltr_u': 3, 'n_cltr_i': 2, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0048
+------------
+------------
+Parameters combination 10 of 64
+params:  {'n_cltr_u': 3, 'n_cltr_i': 3, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0108
+------------
+------------
+Parameters combination 11 of 64
+params:  {'n_cltr_u': 3, 'n_cltr_i': 4, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0122
+------------
+------------
+Parameters combination 12 of 64
+params:  {'n_cltr_u': 3, 'n_cltr_i': 6, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0133
+------------
+------------
+Parameters combination 13 of 64
+params:  {'n_cltr_u': 3, 'n_cltr_i': 10, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0143
+------------
+------------
+Parameters combination 14 of 64
+params:  {'n_cltr_u': 3, 'n_cltr_i': 20, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0151
+------------
+------------
+Parameters combination 15 of 64
+params:  {'n_cltr_u': 3, 'n_cltr_i': 30, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0160
+------------
+------------
+Parameters combination 16 of 64
+params:  {'n_cltr_u': 3, 'n_cltr_i': 40, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0156
+------------
+------------
+Parameters combination 17 of 64
+params:  {'n_cltr_u': 4, 'n_cltr_i': 2, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0047
+------------
+------------
+Parameters combination 18 of 64
+params:  {'n_cltr_u': 4, 'n_cltr_i': 3, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0081
+------------
+------------
+Parameters combination 19 of 64
+params:  {'n_cltr_u': 4, 'n_cltr_i': 4, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0131
+------------
+------------
+Parameters combination 20 of 64
+params:  {'n_cltr_u': 4, 'n_cltr_i': 6, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0146
+------------
+------------
+Parameters combination 21 of 64
+params:  {'n_cltr_u': 4, 'n_cltr_i': 10, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0166
+------------
+------------
+Parameters combination 22 of 64
+params:  {'n_cltr_u': 4, 'n_cltr_i': 20, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0178
+------------
+------------
+Parameters combination 23 of 64
+params:  {'n_cltr_u': 4, 'n_cltr_i': 30, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0188
+------------
+------------
+Parameters combination 24 of 64
+params:  {'n_cltr_u': 4, 'n_cltr_i': 40, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0196
+------------
+------------
+Parameters combination 25 of 64
+params:  {'n_cltr_u': 6, 'n_cltr_i': 2, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0044
+------------
+------------
+Parameters combination 26 of 64
+params:  {'n_cltr_u': 6, 'n_cltr_i': 3, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0059
+------------
+------------
+Parameters combination 27 of 64
+params:  {'n_cltr_u': 6, 'n_cltr_i': 4, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0122
+------------
+------------
+Parameters combination 28 of 64
+params:  {'n_cltr_u': 6, 'n_cltr_i': 6, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0155
+------------
+------------
+Parameters combination 29 of 64
+params:  {'n_cltr_u': 6, 'n_cltr_i': 10, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0183
+------------
+------------
+Parameters combination 30 of 64
+params:  {'n_cltr_u': 6, 'n_cltr_i': 20, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0211
+------------
+------------
+Parameters combination 31 of 64
+params:  {'n_cltr_u': 6, 'n_cltr_i': 30, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0222
+------------
+------------
+Parameters combination 32 of 64
+params:  {'n_cltr_u': 6, 'n_cltr_i': 40, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0230
+------------
+------------
+Parameters combination 33 of 64
+params:  {'n_cltr_u': 10, 'n_cltr_i': 2, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0036
+------------
+------------
+Parameters combination 34 of 64
+params:  {'n_cltr_u': 10, 'n_cltr_i': 3, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0047
+------------
+------------
+Parameters combination 35 of 64
+params:  {'n_cltr_u': 10, 'n_cltr_i': 4, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0067
+------------
+------------
+Parameters combination 36 of 64
+params:  {'n_cltr_u': 10, 'n_cltr_i': 6, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0155
+------------
+------------
+Parameters combination 37 of 64
+params:  {'n_cltr_u': 10, 'n_cltr_i': 10, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0195
+------------
+------------
+Parameters combination 38 of 64
+params:  {'n_cltr_u': 10, 'n_cltr_i': 20, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0230
+------------
+------------
+Parameters combination 39 of 64
+params:  {'n_cltr_u': 10, 'n_cltr_i': 30, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0257
+------------
+------------
+Parameters combination 40 of 64
+params:  {'n_cltr_u': 10, 'n_cltr_i': 40, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0267
+------------
+------------
+Parameters combination 41 of 64
+params:  {'n_cltr_u': 20, 'n_cltr_i': 2, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0044
+------------
+------------
+Parameters combination 42 of 64
+params:  {'n_cltr_u': 20, 'n_cltr_i': 3, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0037
+------------
+------------
+Parameters combination 43 of 64
+params:  {'n_cltr_u': 20, 'n_cltr_i': 4, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0053
+------------
+------------
+Parameters combination 44 of 64
+params:  {'n_cltr_u': 20, 'n_cltr_i': 6, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0124
+------------
+------------
+Parameters combination 45 of 64
+params:  {'n_cltr_u': 20, 'n_cltr_i': 10, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0201
+------------
+------------
+Parameters combination 46 of 64
+params:  {'n_cltr_u': 20, 'n_cltr_i': 20, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0262
+------------
+------------
+Parameters combination 47 of 64
+params:  {'n_cltr_u': 20, 'n_cltr_i': 30, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0288
+------------
+------------
+Parameters combination 48 of 64
+params:  {'n_cltr_u': 20, 'n_cltr_i': 40, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0307
+------------
+------------
+Parameters combination 49 of 64
+params:  {'n_cltr_u': 30, 'n_cltr_i': 2, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0039
+------------
+------------
+Parameters combination 50 of 64
+params:  {'n_cltr_u': 30, 'n_cltr_i': 3, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0031
+------------
+------------
+Parameters combination 51 of 64
+params:  {'n_cltr_u': 30, 'n_cltr_i': 4, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0049
+------------
+------------
+Parameters combination 52 of 64
+params:  {'n_cltr_u': 30, 'n_cltr_i': 6, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0084
+------------
+------------
+Parameters combination 53 of 64
+params:  {'n_cltr_u': 30, 'n_cltr_i': 10, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0210
+------------
+------------
+Parameters combination 54 of 64
+params:  {'n_cltr_u': 30, 'n_cltr_i': 20, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0267
+------------
+------------
+Parameters combination 55 of 64
+params:  {'n_cltr_u': 30, 'n_cltr_i': 30, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0301
+------------
+------------
+Parameters combination 56 of 64
+params:  {'n_cltr_u': 30, 'n_cltr_i': 40, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0326
+------------
+------------
+Parameters combination 57 of 64
+params:  {'n_cltr_u': 40, 'n_cltr_i': 2, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0035
+------------
+------------
+Parameters combination 58 of 64
+params:  {'n_cltr_u': 40, 'n_cltr_i': 3, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0036
+------------
+------------
+Parameters combination 59 of 64
+params:  {'n_cltr_u': 40, 'n_cltr_i': 4, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0051
+------------
+------------
+Parameters combination 60 of 64
+params:  {'n_cltr_u': 40, 'n_cltr_i': 6, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0091
+------------
+------------
+Parameters combination 61 of 64
+params:  {'n_cltr_u': 40, 'n_cltr_i': 10, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0200
+------------
+------------
+Parameters combination 62 of 64
+params:  {'n_cltr_u': 40, 'n_cltr_i': 20, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0269
+------------
+------------
+Parameters combination 63 of 64
+params:  {'n_cltr_u': 40, 'n_cltr_i': 30, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0311
+------------
+------------
+Parameters combination 64 of 64
+params:  {'n_cltr_u': 40, 'n_cltr_i': 40, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0336
+------------
+
+
+
+[{'n_cltr_u': 25, 'n_cltr_i': 3, 'n_epochs': 30}, {'n_cltr_u': 30, 'n_cltr_i': 3, 'n_epochs': 30}, {'n_cltr_u': 35, 'n_cltr_i': 3, 'n_epochs': 30}]
+------------
+Parameters combination 1 of 3
+params:  {'n_cltr_u': 25, 'n_cltr_i': 3, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0038
+------------
+------------
+Parameters combination 2 of 3
+params:  {'n_cltr_u': 30, 'n_cltr_i': 3, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0041
+------------
+------------
+Parameters combination 3 of 3
+params:  {'n_cltr_u': 35, 'n_cltr_i': 3, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0034
+------------
+
+
+[{'n_cltr_u': 25, 'n_cltr_i': 2, 'n_epochs': 30}, {'n_cltr_u': 30, 'n_cltr_i': 2, 'n_epochs': 30}, {'n_cltr_u': 35, 'n_cltr_i': 2, 'n_epochs': 30}]
+------------
+Parameters combination 1 of 3
+params:  {'n_cltr_u': 25, 'n_cltr_i': 2, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0036
+------------
+------------
+Parameters combination 2 of 3
+params:  {'n_cltr_u': 30, 'n_cltr_i': 2, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0031
+------------
+------------
+Parameters combination 3 of 3
+params:  {'n_cltr_u': 35, 'n_cltr_i': 2, 'n_epochs': 30}
+------------
+Mean RMSE: 1.0033
+------------
+
+
+
+[{'n_cltr_u': 30, 'n_cltr_i': 3, 'n_epochs': 100}]
+------------
+Parameters combination 1 of 1
+params:  {'n_cltr_u': 30, 'n_cltr_i': 3, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0035
+------------
+
+
+[{'n_cltr_u': 30, 'n_cltr_i': 2, 'n_epochs': 100}]
+------------
+Parameters combination 1 of 1
+params:  {'n_cltr_u': 30, 'n_cltr_i': 2, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0037
+------------
+
+
+[{'n_cltr_u': 40, 'n_cltr_i': 3, 'n_epochs': 100}, {'n_cltr_u': 50, 'n_cltr_i': 3, 'n_epochs': 100}]
+------------
+Parameters combination 1 of 2
+params:  {'n_cltr_u': 40, 'n_cltr_i': 3, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0032
+------------
+------------
+Parameters combination 2 of 2
+params:  {'n_cltr_u': 50, 'n_cltr_i': 3, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0026
+------------
+
+
+
+[{'n_cltr_u': 60, 'n_cltr_i': 3, 'n_epochs': 100}, {'n_cltr_u': 60, 'n_cltr_i': 2, 'n_epochs': 100}, {'n_cltr_u': 75, 'n_cltr_i': 3, 'n_epochs': 100}, {'n_cltr_u': 75, 'n_cltr_i': 2, 'n_epochs': 100}, {'n_cltr_u': 90, 'n_cltr_i': 3, 'n_epochs': 100}, {'n_cltr_u': 90, 'n_cltr_i': 2, 'n_epochs': 100}]
+------------
+Parameters combination 1 of 6
+params:  {'n_cltr_u': 60, 'n_cltr_i': 3, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0030
+------------
+------------
+Parameters combination 2 of 6
+params:  {'n_cltr_u': 60, 'n_cltr_i': 2, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0033
+------------
+------------
+Parameters combination 3 of 6
+params:  {'n_cltr_u': 75, 'n_cltr_i': 3, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0025
+------------
+------------
+Parameters combination 4 of 6
+params:  {'n_cltr_u': 75, 'n_cltr_i': 2, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0033
+------------
+------------
+Parameters combination 5 of 6
+params:  {'n_cltr_u': 90, 'n_cltr_i': 3, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0029
+------------
+------------
+Parameters combination 6 of 6
+params:  {'n_cltr_u': 90, 'n_cltr_i': 2, 'n_epochs': 100}
+------------
+Mean RMSE: 1.0035
+------------
