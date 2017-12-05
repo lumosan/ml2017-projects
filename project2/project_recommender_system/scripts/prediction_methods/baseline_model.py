@@ -146,3 +146,9 @@ def model_baseline(data, test_data, test_flag, sub_flag=False,
             for (i, u) in zip(rows, cols):
                 pred_i_u = global_mean + user_means[u] + item_means[i]
                 writer.writerow({'Id':'r{r}_c{c}'.format(r=i+1,c=u+1),'Prediction':pred_i_u})
+
+### Prepare submission for Kaggle
+#test_rmse, pred_test = model_baseline(train, test, True, verbose=True)
+## Test RMSE of baseline using baseline: 1.0057078177840961
+#model_baseline(ratings_csr, sample_submission_csr, False, True, "tmp")
+## Achieves 1.00386 in Kaggle
