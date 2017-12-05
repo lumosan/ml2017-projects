@@ -1,0 +1,109 @@
+test_rmse, pred_test = matrix_factorization_SVD(train, test, True,
+    k=8, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=8: 0.9943842697582924
+
+test_rmse, pred_test = matrix_factorization_SVD(train, test, True,
+    k=9, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=9: 0.9941915401489383
+
+test_rmse, pred_test = matrix_factorization_SVD(train, test, True,
+    k=10, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=10: 0.9940223204731177
+
+test_rmse, pred_test = matrix_factorization_SVD(train, test, True,
+    k=11, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=11: 0.9938398983810981
+
+test_rmse, pred_test = matrix_factorization_SVD(train, test, True,
+    k=12, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=12: 0.9938594474952429
+
+test_rmse, pred_test = matrix_factorization_SVD(train, test, True,
+    k=13, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=13: 0.9938733009164722
+
+test_rmse, pred_test = matrix_factorization_SVD(train, test, True,
+    k=14, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=14: 0.9938002517981297
+
+test_rmse, pred_test = matrix_factorization_SVD(train, test, True,
+    k=15, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=15: 0.9939089420610264
+
+test_rmse, pred_test = matrix_factorization_SVD(train, test, True,
+    k=16, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=16: 0.9938735362990492 
+
+test_rmse, pred_test = matrix_factorization_SVD(train, test, True,
+    k=17, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=17: 0.993893372103984
+
+test_rmse, pred_test = matrix_factorization_SVD(train,
+    test, True, k=18, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=18: 0.99411346124994
+
+test_rmse, pred_test = matrix_factorization_SVD(train,
+    test, True, k=20, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=20: 0.9943208474820583
+
+test_rmse, pred_test = matrix_factorization_SVD(train,
+    test, True, k=40, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=30: 0.996778622735402
+
+test_rmse, pred_test = matrix_factorization_SVD(train,
+    test, True, k=60, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=60: 0.9988865706700296
+
+test_rmse, pred_test = matrix_factorization_SVD(train, test,
+    True, k=80, verbose=True, n_iter=30)
+# Test RMSE of matrix_factorization_SVD with k=80: 1.0014715425339453
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+matrix_factorization_SVD(ratings_csr, sample_submission_csr, False,
+    k=11, sub_flag=True, sub_filename="mf_svd2_k11_r42", verbose=True,
+    n_iter=30, random_state=42)
+
+# Achieves 0.99089 in Kaggle
+
+matrix_factorization_SVD(ratings_csr, sample_submission_csr, False,
+    k=12, sub_flag=True, sub_filename="mf_svd2_k12_r42", verbose=True,
+    n_iter=30, random_state=42)
+
+# Achieves ??? in Kaggle
+
+matrix_factorization_SVD(ratings_csr, sample_submission_csr, False,
+    k=11, sub_flag=True, sub_filename="mf_svd2_k11_r70", verbose=True,
+    n_iter=30, random_state=70)
+
+# Achieves ??? in Kaggle
+
+matrix_factorization_SVD(ratings_csr, sample_submission_csr, False,
+    k=12, sub_flag=True, sub_filename="mf_svd2_k12_r70", verbose=True,
+    n_iter=30, random_state=70)
+
+# Achieves ??? in Kaggle
+
+matrix_factorization_SVD(ratings_csr, sample_submission_csr, False,
+    k=11, sub_flag=True, sub_filename="mf_svd2_k11_r70_i50", verbose=True,
+    n_iter=50, random_state=70)
+
+# Achieves ??? in Kaggle
+
+matrix_factorization_SVD(ratings_csr, sample_submission_csr, False,
+    k=12, sub_flag=True, sub_filename="mf_svd2_k12_r70_i50", verbose=True,
+    n_iter=50, random_state=70)
+
+# Achieves 0.99082 in Kaggle
