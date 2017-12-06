@@ -64,6 +64,7 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
         interactions = np.array([u_features[:,u].dot(i_features[:,i].T)
             for (i, u) in zip(rows, cols)])
         pred = baselines + interactions
+        pred = np.clip(pred, 1.0, 5.0)
         # Write predictions to submission file
         pred_matrix = sp.csr_matrix((pred, (rows, cols)), shape=data.shape)
         save_csv(pred_matrix, prediction_path=prediction_path,

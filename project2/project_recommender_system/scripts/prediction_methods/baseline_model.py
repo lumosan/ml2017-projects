@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.sparse as sp
-from prediction_methods.model_helpers import compute_division, calculate_mse
 from processing_methods.data_processing import save_csv
+from prediction_methods.model_helpers import compute_division, calculate_mse
 
 
 def baseline_rating(data):
@@ -109,6 +109,7 @@ def model_baseline(train_data, test_data, test_flag, prediction_path='',
         # Do predictions for `data`
         pred = np.array([(global_mean + item_means[i] + user_means[u])
             for (i, u) in zip(rows, cols)])
+        pred = np.clip(pred, 1.0, 5.0)
         # Write predictions to submission file
         pred_matrix = sp.csr_matrix((pred, (rows, cols)), shape=data.shape)
         save_csv(pred_matrix, prediction_path=prediction_path,
