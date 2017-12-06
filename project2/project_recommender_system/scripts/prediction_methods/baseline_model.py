@@ -1,23 +1,22 @@
 import numpy as np
 import scipy.sparse as sp
-from prediction_methods.model_helpers import compute_division
+from prediction_methods.model_helpers import compute_division, calculate_mse
+from processing_methods.data_processing import save_csv
 
 
-
-# Baseline rating
 def baseline_rating(data):
-    """Implements baseline method for a ratings matrix
-    using the global mean.
+    """Implements baseline method for a ratings matrix using
+    the global mean.
     """
     # Compute global mean using training data
     r_mean = data.sum() / data.getnnz()
     return r_mean
 
-# User or item specific effect
+
 def baseline_user_item_specific(data, mean, set_num=0):
-    """Implements baseline method for a ratings matrix
-    using either the user or the item mean,
-    as indicated in parameter mean.
+    """Implements baseline method for a ratings matrix using either the
+    user or the item mean, as indicated in parameter mean.
+    Returns the user or item specific effect.
     """
     if mean=="user":
         flag = 1
@@ -26,6 +25,7 @@ def baseline_user_item_specific(data, mean, set_num=0):
         flag = 0
         inv_flag = 1
 
+    # Number of elements for which the baseline is computed
     num = max(set_num, data.shape[flag])
 
     # Obtain r_demeaned (ratings minus global avg)
@@ -40,9 +40,7 @@ def baseline_user_item_specific(data, mean, set_num=0):
     counts = np.bincount(data_rcv[flag], minlength=num)
     sums = np.bincount(data_rcv[flag], weights=data_rcv[2], minlength=num)
     means = compute_division(sums, counts)
-
     return means
-
 
 
 def demean_matrix(data, verbose=False):
@@ -57,7 +55,7 @@ def demean_matrix(data, verbose=False):
     item_means = baseline_user_item_specific(data, 'item')
     user_means = baseline_user_item_specific(data, 'user')
 
-    # Substract the baseline of each element in 'data'
+    # Substract baseline of each element in `data`
     train_vals = vals.copy()
     train_vals = 1.0 * train_vals
 
@@ -68,24 +66,22 @@ def demean_matrix(data, verbose=False):
     # Get matrix
     r_demeaned = sp.csr_matrix((train_vals, (rows, cols)),
         shape=(num_rows, num_cols))
-
     if verbose:
         print('Completed demean_matrix!')
-
     return r_demeaned, global_mean, user_means, item_means
+
 
 def demean_test_matrix(data, global_mean, item_means, user_means,
     verbose=False):
-    """Removes the global, user and item means from a matrix
-    using the known means. Returns the demeaned matrix.
+    """Removes known global, user and item means from a matrix.
+    Returns the demeaned matrix.
     """
     num_items, num_users = data.shape
     (rows, cols, vals) = sp.find(data)
 
-    # Substract the baseline of each element in 'data'
+    # Substract baseline of each element in `data`
     train_vals = vals.copy()
     train_vals = 1.0 * train_vals
-
     baselines = np.array([(global_mean + item_means[i] + user_means[u])
         for (i, u) in zip(rows, cols)])
     train_vals -= baselines
@@ -99,56 +95,46 @@ def demean_test_matrix(data, global_mean, item_means, user_means,
     return r_demeaned
 
 
-
-def model_baseline(data, test_data, test_flag, sub_flag=False,
-    sub_filename="new_submission", verbose=False):
-
-    """If 'test_flag' is True, then 'data' should be the training dataset
-    'test_data' the test dataset. In this case sub_flag is ignored.
-
-    If 'test_flag' is False and 'sub_flag' is True, then 'data' should be
-    the entire ratings dataset and 'test_data' should be a sample submission.
-
-    Both 'data' and 'test_data' should be csr sparse matrices.
+def model_baseline(train_data, test_data, test_flag, prediction_path='',
+    validation_data=None):
+    """Baseline by global, item and user mean
+    Trains a model on the csr sparse matrix `train_data` and
+    creates a prediction for the csr sparse matrix `test_data`.
+    If `test_flag` is True, then it also computes rmse for `test_data`
+    and creates predictions for `validation_data`.
     """
-    assert test_flag or sub_flag, "Specify a task"
+    def predict(data, header, filename):
+        # Get non-zero elements
+        (rows, cols, vals) = sp.find(data)
+        # Do predictions for `data`
+        pred = np.array([(global_mean + item_means[i] + user_means[u])
+            for (i, u) in zip(rows, cols)])
+        # Write predictions to submission file
+        pred_matrix = sp.csr_matrix((pred, (rows, cols)), shape=data.shape)
+        save_csv(pred_matrix, header=header, prediction_path=prediction_path,
+            filename=filename)
+        return pred, vals
 
-    num_train_items, num_train_users = data.shape
-    num_test_items, num_test_users = test_data.shape
+    # Obtain number of items and users
+    num_train_i, num_train_u = train_data.shape
+    num_sub_i, num_sub_u = test_data.shape
+    num_i_max = max(num_train_i, num_sub_i)
+    num_u_max = max(num_train_u, num_sub_u)
 
-    num_i_max = max(num_train_items, num_test_items)
-    num_u_max = max(num_train_users, num_test_users)
-
-    global_mean = baseline_rating(data)
-    item_means = baseline_user_item_specific(data, 'item', set_num=num_i_max)
-    user_means = baseline_user_item_specific(data, 'user', set_num=num_u_max)
-
-    (rows, cols, vals) = sp.find(test_data)
+    # Obtain global, item and user means baselines
+    global_mean = baseline_rating(train_data)
+    item_means = baseline_user_item_specific(train_data, 'item', set_num=num_i_max)
+    user_means = baseline_user_item_specific(train_data, 'user', set_num=num_u_max)
 
     if test_flag:
-        # Do predictions
-        pred_test = np.array([(global_mean + item_means[i] + user_means[u])
-            for (i, u) in zip(rows, cols)])
+        # Do and write predictions for `test_data` and `validation_data`
+        te_pred, te_vals = predict(test_data, False, 'model_baseline_te')
+        val_pred, val_vals = predict(validation_data, False, 'model_baseline_val')
 
-        # Compute and print test error
-        test_mse = calculate_mse(vals, pred_test)
-        test_rmse = np.sqrt(test_mse / len(vals))
-        if verbose:
-            print("Test RMSE of baseline using baseline: {e}".format(e=test_rmse))
-        return test_rmse, pred_test
-
-    elif sub_flag:
-        # Directly write predictions to submission file
-        with open('{dp}{fn}.csv'.format(dp=PREDICTION_PATH, fn=sub_filename), 'w') as csvfile:
-            fieldnames = ['Id', 'Prediction']
-            writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
-            writer.writeheader()
-            for (i, u) in zip(rows, cols):
-                pred_i_u = global_mean + user_means[u] + item_means[i]
-                writer.writerow({'Id':'r{r}_c{c}'.format(r=i+1,c=u+1),'Prediction':pred_i_u})
-
-### Prepare submission for Kaggle
-#test_rmse, pred_test = model_baseline(train, test, True, verbose=True)
-## Test RMSE of baseline using baseline: 1.0057078177840961
-#model_baseline(ratings_csr, sample_submission_csr, False, True, "tmp")
-## Achieves 1.00386 in Kaggle
+        # Compute and print error for `test_data`
+        test_mse = calculate_mse(te_vals, te_pred)
+        test_rmse = np.sqrt(test_mse / len(te_vals))
+        print("Test RMSE of model_baseline: {e}".format(e=test_rmse))
+    else:
+        # Create prediction for `test_data` and save it as a Kaggle submission
+        te_pred, te_vals = predict(test_data, True, 'model_baseline_sub')

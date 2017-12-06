@@ -3,57 +3,56 @@ import scipy.sparse as sp
 from recommend.als import ALS
 from recommend.utils.evaluation import RMSE
 from numpy.random import RandomState
-import csv
+from processing_methods.data_processing import save_csv_rec
 
 
-def recommend_ALS_test(data, test_data, eval_iters=50, n_feature=30, reg=5e-2, max_rating=5., min_rating=1., seed=0, n_iters=50):
-    """Matrix factorization by ALS"""
-    # Set seed
+def model_mf_als_recommend(train_data, test_data, test_flag, n_user, n_item,
+    prediction_path='', validation_data=None, k=30, n_iter=50, reg=5e-2, seed=0):
+    """Matrix factorization by ALS using the library recommend.
+    Trains a model on the csr sparse matrix `train_data` and
+    creates a prediction for the csr sparse matrix `test_data`.
+    If `test_flag` is True, then it also computes rmse for `test_data`
+    and creates predictions for `validation_data`.
+    """
+    def predict(data, header, filename):
+        # Get non-zero elements
+        (rows, cols, vals) = sp.find(data)
+        # Create `ratings` array
+        ratings = np.array([np.array([int(u),int(i),int(r)])
+            for (u,i,r) in zip(cols, rows, vals)])
+        # Do predictions for `ratings`
+        pred = als.predict(ratings[:, :2])
+        # Write predictions to submission file
+        save_csv_rec(ratings, pred, header=header, prediction_path=prediction_path,
+            filename=filename)
+        return pred, ratings[:, 2]
+
+    # Set seed and RandomState
+    # TODO: Not sure I need them...
+    np.random.seed(0)
     rand_state = RandomState(0)
 
-    (rows, cols, vals) = sp.find(data)
-    ratings = np.array([np.array([int(u),int(i),int(r)]) for (u,i,r) in zip(cols, rows, vals)])
+    # Initialize constants
+    max_rating, min_rating = 5.0, 1.0
 
-    (test_rows, test_cols, test_vals) = sp.find(test_data)
-    test_ratings = np.array([np.array([int(u),int(i),int(r)]) for (u,i,r) in zip(test_cols, test_rows, test_vals)])
+    # Get non-zero values in `train_data` and create `tr_ratings` array
+    (tr_rows, tr_cols, tr_vals) = sp.find(train_data)
+    tr_ratings = np.array([np.array([int(u),int(i),int(r)])
+        for (u,i,r) in zip(tr_cols, tr_rows, tr_vals)])
 
-    n_user = max(max(ratings[:, 0]), max(test_ratings[:, 0])) + 1
-    n_item = max(max(ratings[:, 1]), max(test_ratings[:, 1])) + 1
+    # Create and train model
+    als = ALS(n_user=n_user, n_item=n_item, n_feature=k, reg=reg,
+        max_rating=max_rating, min_rating=min_rating, seed=seed)
+    als.fit(tr_ratings, n_iters=n_iter)
 
-    als = ALS(n_user=n_user, n_item=n_item, n_feature=n_feature, reg=reg, max_rating=max_rating, min_rating=min_rating, seed=seed)
+    if test_flag:
+        # Do and write predictions for `test_data` and `validation_data`
+        te_pred, te_vals = predict(test_data, False, 'model_mf_als_recommend_te')
+        val_pred, val_vals = predict(validation_data, False, 'model_mf_als_recommend_val')
 
-    als.fit(ratings, n_iters=n_iters)
-    train_preds = als.predict(ratings[:, :2])
-    train_rmse = RMSE(train_preds, ratings[:, 2])
-    val_preds = als.predict(test_ratings[:, :2])
-    val_rmse = RMSE(val_preds, test_ratings[:, 2])
-    print("after %d iterations, train RMSE: %.6f, validation RMSE: %.6f" % \
-      (eval_iters, train_rmse, val_rmse))
-
-def recommend_ALS(data, test_data, n_feature=30, reg=5e-2, max_rating=5., min_rating=1., seed=0, n_iters=50,
-    prediction_path=''):
-    """Matrix factorization by ALS"""
-    # Set seed
-    rand_state = RandomState(0)
-
-    (rows, cols, vals) = sp.find(data)
-    ratings = np.array([np.array([int(u),int(i),int(r)]) for (u,i,r) in zip(cols, rows, vals)])
-
-    (test_rows, test_cols, test_vals) = sp.find(test_data)
-    test_ratings = np.array([np.array([int(u),int(i),int(r)]) for (u,i,r) in zip(test_cols, test_rows, test_vals)])
-
-    n_user = max(ratings[:, 0]) + 1
-    n_item = max(ratings[:, 1]) + 1
-
-    als = ALS(n_user=n_user, n_item=n_item, n_feature=n_feature, reg=reg, max_rating=max_rating, min_rating=min_rating, seed=seed)
-
-    als.fit(ratings, n_iters=n_iters)
-    val_preds = als.predict(test_ratings[:, :2])
-
-    with open('{dp}{fn}.csv'.format(dp=prediction_path, fn='newest'), 'w') as csvfile:
-        fieldnames = ['Id', 'Prediction']
-        writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
-        writer.writeheader()
-        for e in range(test_ratings.shape[0]):
-            writer.writerow({'Id':'r{r}_c{c}'.format(r=test_ratings[e,1]+1,c=test_ratings[e,0]+1),'Prediction':val_preds[e]})
-    # 0.98585 on Kaggle
+        # Compute and print error for `test_data`
+        test_rmse = RMSE(te_pred, te_vals)
+        print("Test RMSE of model_mf_als_recommend: {e}".format(e=test_rmse))
+    else:
+        # Create prediction for `test_data` and save it as a Kaggle submission
+        te_pred, te_vals = predict(test_data, True, 'model_mf_als_recommend_sub')
