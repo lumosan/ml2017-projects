@@ -3,6 +3,7 @@ import scipy.sparse as sp
 import csv
 
 
+## Auxiliary methods for other methods in this script
 def read_txt(path):
     """read text file from path."""
     with open(path, "r") as f:
@@ -15,11 +16,6 @@ def deal_line(line):
     col = col.replace("c", "")
     return int(row), int(col), float(rating)
 
-def load_data(data_path):
-    """Load data in text format, one rating per line, as in the kaggle competition."""
-    data = read_txt(data_path)[1:]
-    return preprocess_data(data)
-
 def preprocess_data(data):
     """Preprocessing the text data, conversion to numerical array format."""
     def statistics(data):
@@ -29,18 +25,28 @@ def preprocess_data(data):
 
     # parse each line
     data = [deal_line(line) for line in data]
-
     # do statistics on the dataset.
     min_row, max_row, min_col, max_col = statistics(data)
-
     # build rating matrix.
     ratings = sp.lil_matrix((max_row, max_col))
     for row, col, rating in data:
         ratings[row - 1, col - 1] = rating
     return ratings.tocsr()
 
-def generate_surprise_input_csv(filename='new_file', data_path='', output_path='output_'):
-    """Reads the text data and outputs it in a file with `surprise` format"""
+
+## Data parsing and loading methods
+def load_data(data_path):
+    """Load data in text format (Kaggle-style csv file)
+    Returns a sparse csr matrix with items as rows and users as cols
+    """
+    data = read_txt(data_path)[1:]
+    return preprocess_data(data)
+
+def parse_data_sur(filename='new_file', data_path='',
+    output_path='surprise_'):
+    """Reads an input csv file and creates an equivalent one
+    only with `surprise` format
+    """
     def write(parsed_list):
         with open('{dp}.csv'.format(dp=write_path), 'w') as csvfile:
             fieldnames = ['item', 'user', 'rating']
@@ -54,6 +60,7 @@ def generate_surprise_input_csv(filename='new_file', data_path='', output_path='
     write(parsed_data)
 
 
+## Methods for creating prediction Kaggle-style csv files
 def save_csv(data_sp, prediction_path='', filename='new_file'):
     """Given a csr sparse matrix `data_sp` writes a Kaggle-style csv file"""
     with open('{dp}{fn}.csv'.format(dp=prediction_path, fn=filename), 'w') as csvfile:
@@ -65,8 +72,6 @@ def save_csv(data_sp, prediction_path='', filename='new_file'):
         for (i, u, v) in zip(rows, cols, vals):
             writer.writerow({'Id':'r{r}_c{c}'.format(r=i+1,c=u+1),'Prediction':v})
 
-
-#TODO: See if I can simplify these two functions...
 def save_csv_rec(data_rec, pred_rec, prediction_path='',
     filename='new_file'):
     """Given an array `data_rec` and a vector of predictions
@@ -81,7 +86,10 @@ def save_csv_rec(data_rec, pred_rec, prediction_path='',
             writer.writerow({'Id':'r{r}_c{c}'.format(r=data_rec[e,1]+1,
                 c=data_rec[e,0]+1),'Prediction':pred_rec[e]})
 
+# TODO: implement save_csv_sur()
 
+
+## Method for splitting into training and test
 def split_data(ratings, min_num_ratings, p_test=0.1, verbose=False, rnd_seed=998):
     """Split the ratings into training data and test data.
     Args:
@@ -119,9 +127,9 @@ def split_data(ratings, min_num_ratings, p_test=0.1, verbose=False, rnd_seed=998
         train[valid_ratings_i[idx], valid_ratings_u[idx]] = valid_ratings_v[idx]
 
     if verbose:
-        print("Total number of nonzero elements in original data: {v}".format(v=ratings.nnz))
-        print("Total number of nonzero elements in train data:    {v}".format(v=train.nnz))
-        print("Total number of nonzero elements in test data:     {v}".format(v=test.nnz))
+        print("Nonzero elements in original data: {v}".format(v=ratings.nnz))
+        print("Nonzero elements in train data:    {v}".format(v=train.nnz))
+        print("Nonzero elements in test data:     {v}".format(v=test.nnz))
 
     # convert to CSR for faster operations
     return valid_ratings.tocsr(), train.tocsr(), test.tocsr()
