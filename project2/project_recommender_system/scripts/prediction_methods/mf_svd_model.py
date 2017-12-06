@@ -21,7 +21,7 @@ def model_mf_svd(train_data, test_data, test_flag, prediction_path='',
     """
     assert k <= min(train_data.shape), "k must be smaller than the min dimension of `train_data`"
 
-    def predict(data, header, filename):
+    def predict(data, filename):
         # Get non-zero elements
         (rows, cols, vals) = sp.find(data)
         # Do predictions for `data`
@@ -32,7 +32,7 @@ def model_mf_svd(train_data, test_data, test_flag, prediction_path='',
         pred = baselines + interactions
         # Write predictions to submission file
         pred_matrix = sp.csr_matrix((pred, (rows, cols)), shape=data.shape)
-        save_csv(pred_matrix, header=header, prediction_path=prediction_path,
+        save_csv(pred_matrix, prediction_path=prediction_path,
             filename=filename+fn_suffix)
         return pred, vals
 
@@ -56,8 +56,8 @@ def model_mf_svd(train_data, test_data, test_flag, prediction_path='',
 
     if test_flag:
         # Do and write predictions for `test_data` and `validation_data`
-        te_pred, te_vals = predict(test_data, False, 'model_mf_svd_te')
-        val_pred, val_vals = predict(validation_data, False, 'model_mf_svd_val')
+        te_pred, te_vals = predict(test_data, 'model_mf_svd_te')
+        val_pred, val_vals = predict(validation_data, 'model_mf_svd_val')
 
         # Compute and print error for `test_data`
         test_mse = calculate_mse(te_vals, te_pred)
@@ -65,4 +65,4 @@ def model_mf_svd(train_data, test_data, test_flag, prediction_path='',
         print("Test RMSE of model_mf_svd: {e}".format(e=test_rmse))
     else:
         # Create prediction for `test_data` and save it as a Kaggle submission
-        te_pred, te_vals = predict(test_data, True, 'model_mf_svd_sub')
+        te_pred, te_vals = predict(test_data, 'model_mf_svd_sub')

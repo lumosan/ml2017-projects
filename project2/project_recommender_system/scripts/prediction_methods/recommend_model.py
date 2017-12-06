@@ -14,7 +14,7 @@ def model_mf_als_recommend(train_data, test_data, test_flag, n_user, n_item,
     If `test_flag` is True, then it also computes rmse for `test_data`
     and creates predictions for `validation_data`.
     """
-    def predict(data, header, filename):
+    def predict(data, filename):
         # Get non-zero elements
         (rows, cols, vals) = sp.find(data)
         # Create `ratings` array
@@ -23,7 +23,7 @@ def model_mf_als_recommend(train_data, test_data, test_flag, n_user, n_item,
         # Do predictions for `ratings`
         pred = als.predict(ratings[:, :2])
         # Write predictions to submission file
-        save_csv_rec(ratings, pred, header=header, prediction_path=prediction_path,
+        save_csv_rec(ratings, pred, prediction_path=prediction_path,
             filename=filename)
         return pred, ratings[:, 2]
 
@@ -47,12 +47,12 @@ def model_mf_als_recommend(train_data, test_data, test_flag, n_user, n_item,
 
     if test_flag:
         # Do and write predictions for `test_data` and `validation_data`
-        te_pred, te_vals = predict(test_data, False, 'model_mf_als_recommend_te')
-        val_pred, val_vals = predict(validation_data, False, 'model_mf_als_recommend_val')
+        te_pred, te_vals = predict(test_data, 'model_mf_als_recommend_te')
+        val_pred, val_vals = predict(validation_data, 'model_mf_als_recommend_val')
 
         # Compute and print error for `test_data`
         test_rmse = RMSE(te_pred, te_vals)
         print("Test RMSE of model_mf_als_recommend: {e}".format(e=test_rmse))
     else:
         # Create prediction for `test_data` and save it as a Kaggle submission
-        te_pred, te_vals = predict(test_data, True, 'model_mf_als_recommend_sub')
+        te_pred, te_vals = predict(test_data, 'model_mf_als_recommend_sub')
