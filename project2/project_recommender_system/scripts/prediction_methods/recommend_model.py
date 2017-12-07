@@ -3,7 +3,7 @@ import scipy.sparse as sp
 from recommend.als import ALS
 from recommend.utils.evaluation import RMSE
 from numpy.random import RandomState
-from processing_methods.data_processing import save_csv_rec
+from datafile_methods.data_io import save_csv_rec
 
 
 def model_mf_als_recommend(train_data, test_data, test_flag, n_user, n_item,
