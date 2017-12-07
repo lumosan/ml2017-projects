@@ -48,11 +48,9 @@ def model_knn_baseline(train_data, test_data, test_flag, prediction_path='',
     # Set seed and RandomState
     np.random.seed(0)
     rand_state = RandomState(0)
-    # Create dictionary of parameters
-    params_knn_bl = {'k':k, 'min_k': min_k, 'sim_options': {'name': name,
-        'user_based': user_based}}
     # Initialize algorithm
-    algo_knn_bl = KNNBaseline(params_knn_bl)
+    algo_knn_bl = KNNBaseline(k=k, min_k= min_k,
+        sim_options={name:name, user_based:user_based})
     # Train model
     algo_knn_bl.train(train_data)
     if test_flag:
