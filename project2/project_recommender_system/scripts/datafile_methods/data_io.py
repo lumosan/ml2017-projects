@@ -5,6 +5,7 @@ from datafile_methods.data_processing import load_data
 from surprise.dataset import Reader
 from surprise import Dataset
 
+
 ## Methods for loading data
 def load_datasets(data_path='../data/'):
     """ Load all datasets """
