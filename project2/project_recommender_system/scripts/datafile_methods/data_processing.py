@@ -59,36 +59,6 @@ def parse_data_sur(filename='new_file', data_path='',
     parsed_data = [deal_line(line) for line in data]
     write(parsed_data)
 
-
-## Methods for creating prediction Kaggle-style csv files
-def save_csv(data_sp, prediction_path='', filename='new_file'):
-    """Given a csr sparse matrix `data_sp` writes a Kaggle-style csv file"""
-    with open('{dp}{fn}.csv'.format(dp=prediction_path, fn=filename), 'w') as csvfile:
-        fieldnames = ['Id', 'Prediction']
-        writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
-        writer.writeheader()
-        # Get non-zero elements
-        (rows, cols, vals) = sp.find(data_sp)
-        for (i, u, v) in zip(rows, cols, vals):
-            writer.writerow({'Id':'r{r}_c{c}'.format(r=i+1,c=u+1),'Prediction':v})
-
-def save_csv_rec(data_rec, pred_rec, prediction_path='',
-    filename='new_file'):
-    """Given an array `data_rec` and a vector of predictions
-    `pred_rec` in the format required by library 'recommend',
-    writes a Kaggle-style csv file
-    """
-    with open('{dp}{fn}.csv'.format(dp=prediction_path, fn=filename), 'w') as csvfile:
-        fieldnames = ['Id', 'Prediction']
-        writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
-        writer.writeheader()
-        for e in range(data_rec.shape[0]):
-            writer.writerow({'Id':'r{r}_c{c}'.format(r=data_rec[e,1]+1,
-                c=data_rec[e,0]+1),'Prediction':pred_rec[e]})
-
-# TODO: implement save_csv_sur()
-
-
 ## Method for splitting into training and test
 def split_data(ratings, min_num_ratings, p_test=0.1, verbose=False, rnd_seed=998):
     """Split the ratings into training data and test data.

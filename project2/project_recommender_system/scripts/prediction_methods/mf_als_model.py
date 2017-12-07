@@ -2,7 +2,7 @@ import numpy as np
 import scipy.sparse as sp
 from prediction_methods.model_helpers import build_index_groups, compute_error, calculate_mse
 from prediction_methods.baseline_model import demean_matrix, demean_test_matrix
-from processing_methods.data_processing import save_csv
+from datafile_methods.data_io import save_csv
 
 
 def init_MF(data, k):
@@ -107,13 +107,10 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
         # compute and print new training error
         old_e = e
         e = compute_error(train_dem, u_features, i_features, nz_train)
-        print("training RMSE: {}.".format(e))
         if(abs(old_e - e) < tol):
-            print('Finished estimating features')
             break
         if(old_e - e < -tol):
             #TODO: Remove this print and ask a TA about this
-            print('Whoops!')
             break
 
     if test_flag:

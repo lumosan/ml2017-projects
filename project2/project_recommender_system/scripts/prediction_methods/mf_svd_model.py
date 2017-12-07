@@ -4,7 +4,7 @@ from scipy.sparse.linalg import svds
 from sklearn.decomposition import TruncatedSVD
 from prediction_methods.baseline_model import demean_matrix
 from prediction_methods.model_helpers import calculate_mse
-from processing_methods.data_processing import save_csv
+from datafile_methods.data_io import save_csv
 
 
 def model_mf_svd(train_data, test_data, test_flag, prediction_path='',
