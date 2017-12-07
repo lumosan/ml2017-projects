@@ -48,7 +48,7 @@ def update_item_features(train, u_features, lambda_i,
 
 def model_mf_als(train_data, test_data, test_flag, prediction_path='',
     validation_data=None, k=20, lambda_u=.1, lambda_i=.7, tol=1e-6, max_iter=100,
-    init_u_features=None, init_i_features=None, fn_suffix=''):
+    init_u_features=None, init_i_features=None):
     """Matrix factorization by ALS
     Trains a model on the csr sparse matrix `train_data` and
     creates a prediction for the csr sparse matrix `test_data`.
@@ -68,7 +68,7 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
         # Write predictions to submission file
         pred_matrix = sp.csr_matrix((pred, (rows, cols)), shape=data.shape)
         save_csv(pred_matrix, prediction_path=prediction_path,
-            filename=filename+fn_suffix)
+            filename=filename)
         return pred, vals
 
     # Set seed
