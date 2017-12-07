@@ -107,13 +107,10 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
         # compute and print new training error
         old_e = e
         e = compute_error(train_dem, u_features, i_features, nz_train)
-        print("training RMSE: {}.".format(e))
         if(abs(old_e - e) < tol):
-            print('Finished estimating features')
             break
         if(old_e - e < -tol):
             #TODO: Remove this print and ask a TA about this
-            print('Whoops!')
             break
 
     if test_flag:
