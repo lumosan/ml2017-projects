@@ -9,19 +9,15 @@ from surprise import Dataset
 ## Methods for loading data
 def load_datasets(data_path='../data/'):
     """ Load all datasets """
-    train = load_data('{dp}train_set.csv'.format(dp=data_path))
-    test = load_data('{dp}test_set.csv'.format(dp=data_path))
-    validation = load_data('{dp}validation_set.csv'.format(dp=data_path))
     ratings = load_data('{dp}data_train.csv'.format(dp=data_path))
     sample_submission = load_data('{dp}sample_submission.csv'.format(dp=data_path))
-    return train, test, validation, ratings, sample_submission
+    folds = [load_data('{dp}fold{i}.csv'.format(dp=data_path, i=i)) for i in range(5)]
+    return folds, ratings, sample_submission
 
 def load_datasets_sur(data_path='../data/surprise/'):
     """Load all datasets for 'surprise' library"""
     # Define paths to dataset files
-    tr_dp = os.path.expanduser('{}train_set.csv'.format(data_path))
-    te_dp = os.path.expanduser('{}test_set.csv'.format(data_path))
-    val_dp = os.path.expanduser('{}validation_set.csv'.format(data_path))
+    folds_dp = [os.path.expanduser('{}fold{}.csv'.format(data_path, i)) for i in range(5)]
     rat_dp = os.path.expanduser('{}data_train.csv'.format(data_path))
     sub_dp = os.path.expanduser('{}sample_submission.csv'.format(data_path))
 
@@ -29,22 +25,15 @@ def load_datasets_sur(data_path='../data/surprise/'):
     reader = Reader(line_format='item user rating', sep=',')
 
     # Load datasets
-    train_ds = Dataset.load_from_file(tr_dp, reader=reader)
-    test_ds = Dataset.load_from_file(te_dp, reader=reader)
-    validation_ds = Dataset.load_from_file(val_dp, reader=reader)
+    folds_ds = [Dataset.load_from_file(f_dp, reader=reader) for f_dp in folds_dp]
     ratings_ds = Dataset.load_from_file(rat_dp, reader=reader)
     sample_submission_ds = Dataset.load_from_file(sub_dp, reader=reader)
 
     # Retrieve trainsets
-    train = train_ds.build_full_trainset()
+    folds = [f_ds.build_full_trainset() for f_ds in folds_ds]
     ratings = ratings_ds.build_full_trainset()
-
-    # Retrieve testsets
-    test = test_ds.build_full_trainset().build_testset()
-    validation = validation_ds.build_full_trainset().build_testset()
-    sample_submission = sample_submission_ds.build_full_trainset().build_testset()
-
-    return train, test, validation, ratings, sample_submission
+    sample_submission = sample_submission_ds.build_full_trainset()
+    return folds, ratings, sample_submission
 
 
 ## Methods for creating prediction Kaggle-style csv files
