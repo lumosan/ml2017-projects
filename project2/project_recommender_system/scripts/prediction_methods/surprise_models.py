@@ -2,6 +2,7 @@ import numpy as np
 from numpy.random import RandomState
 from datafile_methods.data_io import save_csv_sur
 from surprise import SlopeOne, CoClustering, KNNBaseline, NMF, SVD
+from surprise.accuracy import rmse
 
 
 def predict(algo, data, prediction_path, filename):
@@ -13,8 +14,7 @@ def predict(algo, data, prediction_path, filename):
 def predict_error(algo, data):
     # Do predictions for `data`
     pred = algo.test(data.build_testset())
-    rmse = surprise.accuracy.rmse(pred, verbose=False)
-    return rmse
+    return rmse(pred, verbose=False)
 
 def model_slope_one(train_data, test_data, test_flag, prediction_path=''):
     # Initialize algorithm
