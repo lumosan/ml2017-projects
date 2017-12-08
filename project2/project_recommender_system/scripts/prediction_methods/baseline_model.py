@@ -95,32 +95,31 @@ def demean_test_matrix(data, global_mean, item_means, user_means,
     return r_demeaned
 
 
-def model_baseline(train_data, test_data, test_flag, prediction_path='',
-    validation_data=None):
+def model_baseline(train_data, test_data, test_flag, prediction_path=''):
     """Baseline by global, item and user mean
     Trains a model on the csr sparse matrix `train_data` and
     creates a prediction for the csr sparse matrix `test_data`.
-    If `test_flag` is True, then it also computes rmse for `test_data`
-    and creates predictions for `validation_data`.
+    If `test_flag` is True, then it also computes train and test rmse.
     """
-    def predict(data, filename):
+    def predict(data, filename, save=True):
         # Get non-zero elements
         (rows, cols, vals) = sp.find(data)
         # Do predictions for `data`
         pred = np.array([(global_mean + item_means[i] + user_means[u])
             for (i, u) in zip(rows, cols)])
         pred = np.clip(pred, 1.0, 5.0)
-        # Write predictions to submission file
-        pred_matrix = sp.csr_matrix((pred, (rows, cols)), shape=data.shape)
-        save_csv(pred_matrix, prediction_path=prediction_path,
-            filename=filename)
+        if save:
+            # Write predictions to submission file
+            pred_matrix = sp.csr_matrix((pred, (rows, cols)), shape=data.shape)
+            save_csv(pred_matrix, prediction_path=prediction_path,
+                filename=filename)
         return pred, vals
 
     # Obtain number of items and users
-    num_train_i, num_train_u = train_data.shape
-    num_sub_i, num_sub_u = test_data.shape
-    num_i_max = max(num_train_i, num_sub_i)
-    num_u_max = max(num_train_u, num_sub_u)
+    num_tr_i, num_tr_u = train_data.shape
+    num_te_i, num_te_u = test_data.shape
+    num_i_max = max(num_tr_i, num_te_i)
+    num_u_max = max(num_tr_u, num_te_u)
 
     # Obtain global, item and user means baselines
     global_mean = baseline_rating(train_data)
@@ -128,14 +127,18 @@ def model_baseline(train_data, test_data, test_flag, prediction_path='',
     user_means = baseline_user_item_specific(train_data, 'user', set_num=num_u_max)
 
     if test_flag:
-        # Do and write predictions for `test_data` and `validation_data`
-        te_pred, te_vals = predict(test_data, 'model_baseline_te')
-        val_pred, val_vals = predict(validation_data, 'model_baseline_val')
-
-        # Compute and print error for `test_data`
+        # Get predictions for `train_data`
+        tr_pred, tr_vals = predict(train_data, '', save=False)
+        # Get and save predictions for `test_data`
+        te_pred, te_vals = predict(test_data, '', save=False)
+        # Compute train error
+        train_mse = calculate_mse(tr_vals, tr_pred)
+        train_rmse = np.sqrt(train_mse / len(tr_vals))
+        # Compute test error
         test_mse = calculate_mse(te_vals, te_pred)
         test_rmse = np.sqrt(test_mse / len(te_vals))
-        print("Test RMSE of model_baseline: {e}".format(e=test_rmse))
+        return train_rmse, test_rmse
     else:
         # Create prediction for `test_data` and save it as a Kaggle submission
         te_pred, te_vals = predict(test_data, 'model_baseline_sub')
+        tr_pred, tr_vals = predict(train_data, 'model_baseline_tr')
