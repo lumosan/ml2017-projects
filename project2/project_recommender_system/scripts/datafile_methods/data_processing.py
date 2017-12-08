@@ -42,7 +42,7 @@ def load_data(data_path):
     data = read_txt(data_path)[1:]
     return preprocess_data(data)
 
-def parse_data_sur(filename='new_file', data_path='',
+def parse_data_sur(filenames, data_path='', output_fn='new_file_sur',
     output_path='surprise_'):
     """Reads an input csv file and creates an equivalent one
     only with `surprise` format
@@ -53,10 +53,10 @@ def parse_data_sur(filename='new_file', data_path='',
             writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
             for (i, u, r) in parsed_list:
                 writer.writerow({'item':i,'user':u,'rating':r})
-    read_path = '{dp}{f}.csv'.format(dp=data_path, f=filename)
-    write_path = '{odp}{f}'.format(odp=output_path, f=filename)
-    data = read_txt(read_path)[1:]
-    parsed_data = [deal_line(line) for line in data]
+    read_paths = ['{dp}{f}.csv'.format(dp=data_path, f=filename) for filename in filenames]
+    write_path = '{odp}{f}'.format(odp=output_path, f=output_fn)
+    data_list = [read_txt(read_path)[1:] for read_path in read_paths]
+    parsed_data = [deal_line(line) for data in data_list for line in data]
     write(parsed_data)
 
 ## Method for splitting into training and test

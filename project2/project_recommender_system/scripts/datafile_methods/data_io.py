@@ -17,7 +17,8 @@ def load_datasets(data_path='../data/'):
 def load_datasets_sur(data_path='../data/surprise/'):
     """Load all datasets for 'surprise' library"""
     # Define paths to dataset files
-    folds_dp = [os.path.expanduser('{}fold{}.csv'.format(data_path, i)) for i in range(5)]
+    folds_tr_dp = [os.path.expanduser('{}fold_tr_{}.csv'.format(data_path, i)) for i in range(5)]
+    folds_te_dp = [os.path.expanduser('{}fold_te_{}.csv'.format(data_path, i)) for i in range(5)]
     rat_dp = os.path.expanduser('{}data_train.csv'.format(data_path))
     sub_dp = os.path.expanduser('{}sample_submission.csv'.format(data_path))
 
@@ -25,15 +26,17 @@ def load_datasets_sur(data_path='../data/surprise/'):
     reader = Reader(line_format='item user rating', sep=',')
 
     # Load datasets
-    folds_ds = [Dataset.load_from_file(f_dp, reader=reader) for f_dp in folds_dp]
+    folds_tr_ds = [Dataset.load_from_file(f_dp, reader=reader) for f_dp in folds_tr_dp]
+    folds_te_ds = [Dataset.load_from_file(f_dp, reader=reader) for f_dp in folds_te_dp]
     ratings_ds = Dataset.load_from_file(rat_dp, reader=reader)
     sample_submission_ds = Dataset.load_from_file(sub_dp, reader=reader)
 
     # Retrieve trainsets
-    folds = [f_ds.build_full_trainset() for f_ds in folds_ds]
+    folds_tr = [f_ds.build_full_trainset() for f_ds in folds_tr_ds]
+    folds_te = [f_ds.build_full_trainset() for f_ds in folds_te_ds]
     ratings = ratings_ds.build_full_trainset()
     sample_submission = sample_submission_ds.build_full_trainset()
-    return folds, ratings, sample_submission
+    return folds_tr, folds_te, ratings, sample_submission
 
 
 ## Methods for creating prediction Kaggle-style csv files
