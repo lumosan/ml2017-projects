@@ -6,13 +6,13 @@ from surprise import SlopeOne, CoClustering, KNNBaseline, NMF, SVD
 
 def predict(algo, data, prediction_path, filename):
     # Do predictions for `data`
-    pred = algo.test(data)
+    pred = algo.test(data.build_testset())
     # Write predictions to submission file
     save_csv_sur(pred, prediction_path=prediction_path, filename=filename)
 
 def predict_error(algo, data):
     # Do predictions for `data`
-    pred = algo.test(data)
+    pred = algo.test(data.build_testset())
     rmse = surprise.accuracy.rmse(pred, verbose=False)
     return rmse
 
