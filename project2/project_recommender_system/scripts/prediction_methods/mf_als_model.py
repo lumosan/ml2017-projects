@@ -47,15 +47,14 @@ def update_item_features(train, u_features, lambda_i,
 
 
 def model_mf_als(train_data, test_data, test_flag, prediction_path='',
-    validation_data=None, k=20, lambda_u=.1, lambda_i=.7, tol=1e-6, max_iter=100,
+    k=20, lambda_u=.1, lambda_i=.7, tol=1e-6, max_iter=100,
     init_u_features=None, init_i_features=None):
     """Matrix factorization by ALS
     Trains a model on the csr sparse matrix `train_data` and
     creates a prediction for the csr sparse matrix `test_data`.
-    If `test_flag` is True, then it also computes rmse for `test_data`
-    and creates predictions for `validation_data`.
+    If `test_flag` is True, then it also computes train and test rmse.
     """
-    def predict(data, filename):
+    def predict(data, filename, save=True):
         # Get non-zero elements
         (rows, cols, vals) = sp.find(data)
         # Do predictions for `data`
@@ -65,10 +64,11 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
             for (i, u) in zip(rows, cols)])
         pred = baselines + interactions
         pred = np.clip(pred, 1.0, 5.0)
-        # Write predictions to submission file
-        pred_matrix = sp.csr_matrix((pred, (rows, cols)), shape=data.shape)
-        save_csv(pred_matrix, prediction_path=prediction_path,
-            filename=filename)
+        if save:
+            # Write predictions to submission file
+            pred_matrix = sp.csr_matrix((pred, (rows, cols)), shape=data.shape)
+            save_csv(pred_matrix, prediction_path=prediction_path,
+                filename=filename)
         return pred, vals
 
     # Set seed
@@ -114,14 +114,18 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
             break
 
     if test_flag:
-        # Do and write predictions for `test_data` and `validation_data`
-        te_pred, te_vals = predict(test_data, 'model_mf_als_te')
-        val_pred, val_vals = predict(validation_data, 'model_mf_als_val')
-
-        # Compute and print error for `test_data`
+        # Get predictions for `train_data`
+        tr_pred, tr_vals = predict(train_data, '', save=False)
+        # Get and save predictions for `test_data`
+        te_pred, te_vals = predict(test_data, '', save=False)
+        # Compute train error
+        train_mse = calculate_mse(tr_vals, tr_pred)
+        train_rmse = np.sqrt(train_mse / len(tr_vals))
+        # Compute test error
         test_mse = calculate_mse(te_vals, te_pred)
         test_rmse = np.sqrt(test_mse / len(te_vals))
-        print("Test RMSE of model_mf_als: {e}".format(e=test_rmse))
+        return train_rmse, test_rmse
     else:
-        # Create prediction for `test_data` and save it as a Kaggle submission
+        # Create and save predictions as Kaggle submissions
         te_pred, te_vals = predict(test_data, 'model_mf_als_sub')
+        tr_pred, tr_vals = predict(train_data, 'model_mf_als_tr')

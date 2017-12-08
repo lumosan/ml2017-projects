@@ -139,6 +139,6 @@ def model_baseline(train_data, test_data, test_flag, prediction_path=''):
         test_rmse = np.sqrt(test_mse / len(te_vals))
         return train_rmse, test_rmse
     else:
-        # Create prediction for `test_data` and save it as a Kaggle submission
+        # Create and save predictions as Kaggle submissions
         te_pred, te_vals = predict(test_data, 'model_baseline_sub')
         tr_pred, tr_vals = predict(train_data, 'model_baseline_tr')
