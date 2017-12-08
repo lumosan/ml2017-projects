@@ -60,7 +60,7 @@ def parse_data_sur(filename='new_file', data_path='',
     write(parsed_data)
 
 ## Method for splitting into training and test
-def split_data(ratings, min_num_ratings, p_test=0.1, verbose=False, rnd_seed=998):
+def split_data(ratings, min_num_ratings=0, p_test=[.9, .1], rnd_seed=998):
     """Split the ratings into training data and test data.
     Args:
         min_num_ratings:
@@ -82,24 +82,30 @@ def split_data(ratings, min_num_ratings, p_test=0.1, verbose=False, rnd_seed=998
     valid_ratings = ratings[valid_items, :][:, valid_users]
 
     # LIL is a convenient format for constructing sparse matrices
-    train = sp.lil_matrix(valid_ratings.shape)
-    test = sp.lil_matrix(valid_ratings.shape)
+    sets = [sp.lil_matrix(valid_ratings.shape) for p in p_test]
 
+    # Get a random permutation of the valid ratings
     valid_ratings_i, valid_ratings_u, valid_ratings_v = sp.find(valid_ratings)
     valid_ratings_p_idx = np.random.permutation(range(len(valid_ratings_i)))
 
-    n_test = int(p_test*len(valid_ratings_i))
+    # Get number of ratings in each set
+    n_elem_sets = [int(p * len(valid_ratings_i)) for p in p_test]
+    n_elem_sets[:0] = [0]
+    n_sets = np.cumsum(n_elem_sets)
+    # the last set contains all remaining data
+    n_sets[-1] = len(valid_ratings_i)
 
-    for idx in valid_ratings_p_idx[:n_test]:
-        test[valid_ratings_i[idx], valid_ratings_u[idx]] = valid_ratings_v[idx]
-
-    for idx in valid_ratings_p_idx[n_test:]:
-        train[valid_ratings_i[idx], valid_ratings_u[idx]] = valid_ratings_v[idx]
-
-    if verbose:
-        print("Nonzero elements in original data: {v}".format(v=ratings.nnz))
-        print("Nonzero elements in train data:    {v}".format(v=train.nnz))
-        print("Nonzero elements in test data:     {v}".format(v=test.nnz))
+    for s in range(len(sets)):
+        for idx in valid_ratings_p_idx[n_sets[s]:n_sets[s+1]]:
+            sets[s][valid_ratings_i[idx], valid_ratings_u[idx]] = valid_ratings_v[idx]
 
     # convert to CSR for faster operations
-    return valid_ratings.tocsr(), train.tocsr(), test.tocsr()
+    return [s.tocsr() for s in sets]
+
+def k_fold_split(ratings, k=5):
+    """Uses function split_data to split training data to use for
+    k-fold cross validation.
+    """
+    n_ratings = np.full((1,k),1/k).flatten()
+    folds = split_data(ratings, p_test=n_ratings)
+    return folds
