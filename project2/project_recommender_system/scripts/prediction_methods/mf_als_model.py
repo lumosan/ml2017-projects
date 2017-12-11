@@ -4,6 +4,7 @@ from prediction_methods.model_helpers import build_index_groups, compute_error, 
 from prediction_methods.baseline_model import demean_matrix, demean_test_matrix
 from datafile_methods.data_io import save_csv
 
+import io
 
 def init_MF(data, k):
     """Initializes parameters for Matrix Factorization.
@@ -50,7 +51,7 @@ def update_item_features(train, u_features, lambda_i,
 
 def model_mf_als(train_data, test_data, test_flag, prediction_path='',
     k=20, lambda_u=.1, lambda_i=.7, tol=1e-6, max_iter=100,
-    init_u_features=None, init_i_features=None):
+    init_u_features=None, init_i_features=None, fold_number=''):
     """Matrix factorization by ALS
     Trains a model on the csr sparse matrix `train_data` and
     creates a prediction for the csr sparse matrix `test_data`.
@@ -115,12 +116,22 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
         if(old_e - e < -tol):
             #TODO: Remove this print and ask a TA about this
             break
-
+    with open("u_features.txt", "w") as f:
+        f.write('[')
+        for row in u_features:
+            f.write('['+', '.join(str(elem) for elem in row) + '], ')
+        f.write(']')
+    with open("i_features.txt", "w") as f:
+        f.write('[')
+        for row in i_features:
+            f.write('['+', '.join(str(elem) for elem in row) + '], ')
+        f.write(']')
     if test_flag:
         # Get predictions for `train_data`
         tr_pred, tr_vals = predict(train_data, '', save=False)
         # Get and save predictions for `test_data`
-        te_pred, te_vals = predict(test_data, '', save=False)
+        te_pred, te_vals = predict(test_data,
+            'model_mf_als_te_{}'.format(fold_number))
         # Compute train error
         train_mse = calculate_mse(tr_vals, tr_pred)
         train_rmse = np.sqrt(train_mse / len(tr_vals))
@@ -131,4 +142,3 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
     else:
         # Create and save predictions as Kaggle submissions
         te_pred, te_vals = predict(test_data, 'model_mf_als_sub')
-        tr_pred, tr_vals = predict(train_data, 'model_mf_als_tr')

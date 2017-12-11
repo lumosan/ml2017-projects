@@ -95,7 +95,7 @@ def demean_test_matrix(data, global_mean, item_means, user_means,
     return r_demeaned
 
 
-def model_baseline(train_data, test_data, test_flag, prediction_path=''):
+def model_baseline(train_data, test_data, test_flag, prediction_path='', fold_number=''):
     """Baseline by global, item and user mean
     Trains a model on the csr sparse matrix `train_data` and
     creates a prediction for the csr sparse matrix `test_data`.
@@ -130,7 +130,7 @@ def model_baseline(train_data, test_data, test_flag, prediction_path=''):
         # Get predictions for `train_data`
         tr_pred, tr_vals = predict(train_data, '', save=False)
         # Get and save predictions for `test_data`
-        te_pred, te_vals = predict(test_data, '', save=False)
+        te_pred, te_vals = predict(test_data, 'model_baseline_te_{}'.format(fold_number))
         # Compute train error
         train_mse = calculate_mse(tr_vals, tr_pred)
         train_rmse = np.sqrt(train_mse / len(tr_vals))
@@ -141,4 +141,3 @@ def model_baseline(train_data, test_data, test_flag, prediction_path=''):
     else:
         # Create and save predictions as Kaggle submissions
         te_pred, te_vals = predict(test_data, 'model_baseline_sub')
-        tr_pred, tr_vals = predict(train_data, 'model_baseline_tr')

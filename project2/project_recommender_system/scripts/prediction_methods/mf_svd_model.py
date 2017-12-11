@@ -9,7 +9,7 @@ from datafile_methods.data_io import save_csv
 
 def model_mf_svd(train_data, test_data, test_flag, prediction_path='',
     k=20, n_iter=10, random_state=42, library='scipy',
-    fn_suffix=''):
+    fn_suffix='', fold_number=''):
     """Matrix factorization by SVD.
     Trains a model on the csr sparse matrix `train_data` and
     creates a prediction for the csr sparse matrix `test_data`.
@@ -59,7 +59,8 @@ def model_mf_svd(train_data, test_data, test_flag, prediction_path='',
         # Get predictions for `train_data`
         tr_pred, tr_vals = predict(train_data, '', save=False)
         # Get and save predictions for `test_data`
-        te_pred, te_vals = predict(test_data, '', save=False)
+        te_pred, te_vals = predict(test_data,
+            'model_mf_svd_{}te_{}'.format(fn_suffix, fold_number))
         # Compute train error
         train_mse = calculate_mse(tr_vals, tr_pred)
         train_rmse = np.sqrt(train_mse / len(tr_vals))
@@ -70,4 +71,3 @@ def model_mf_svd(train_data, test_data, test_flag, prediction_path='',
     else:
         # Create and save predictions as Kaggle submissions
         te_pred, te_vals = predict(test_data, 'model_mf_svd_{}sub'.format(fn_suffix))
-        tr_pred, tr_vals = predict(train_data, 'model_mf_svd_{}tr'.format(fn_suffix))

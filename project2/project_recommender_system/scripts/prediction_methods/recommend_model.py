@@ -7,7 +7,8 @@ from datafile_methods.data_io import save_csv_rec
 
 
 def model_mf_als_recommend(train_data, test_data, test_flag, n_user=5, n_item=5,
-    prediction_path='', validation_data=None, k=30, n_iter=50, reg=5e-2, seed=0):
+    prediction_path='', validation_data=None, k=30, n_iter=50, reg=5e-2, seed=0,
+    fold_number=''):
     """Matrix factorization by ALS using the library recommend.
     Trains a model on the csr sparse matrix `train_data` and
     creates a prediction for the csr sparse matrix `test_data`.
@@ -49,7 +50,8 @@ def model_mf_als_recommend(train_data, test_data, test_flag, n_user=5, n_item=5,
         # Get predictions for `train_data`
         tr_pred, tr_vals = predict(train_data, '', save=False)
         # Get and save predictions for `test_data`
-        te_pred, te_vals = predict(test_data, '', save=False)
+        te_pred, te_vals = predict(test_data,
+            'model_mf_als_recommend_te_{}'.format(fold_number))
         # Compute train error
         train_rmse = RMSE(tr_pred, tr_vals)
         # Compute test error
@@ -58,4 +60,3 @@ def model_mf_als_recommend(train_data, test_data, test_flag, n_user=5, n_item=5,
     else:
         # Create and save predictions as Kaggle submissions
         te_pred, te_vals = predict(test_data, 'model_mf_als_recommend_sub')
-        tr_pred, tr_vals = predict(train_data, 'model_mf_als_recommend_tr')

@@ -5,35 +5,37 @@ from surprise import SlopeOne, CoClustering, KNNBaseline, NMF, SVD
 from surprise.accuracy import rmse
 
 
-def predict(algo, data, prediction_path, filename):
+def predict(algo, data, prediction_path, filename, save=True):
     # Do predictions for `data`
     pred = algo.test(data.build_testset())
-    # Write predictions to submission file
-    save_csv_sur(pred, prediction_path=prediction_path, filename=filename)
-
-def predict_error(algo, data):
-    # Do predictions for `data`
+    if save:
+        # Write predictions to submission file
+        save_csv_sur(pred, prediction_path=prediction_path, filename=filename)
+    # Return pred
     pred = algo.test(data.build_testset())
-    return rmse(pred, verbose=False)
+    return pred
 
-def model_slope_one(train_data, test_data, test_flag, prediction_path=''):
+def model_slope_one(train_data, test_data, test_flag, prediction_path='',
+    fold_number=''):
     # Initialize algorithm
     algo_so = SlopeOne()
     # Train model
     algo_so.train(train_data)
     if test_flag:
         # Get train error
-        train_rmse = predict_error(algo_so, train_data)
+        train_pred = predict(algo_so, train_data, '', '', save=False)
+        train_rmse = rmse(train_pred, verbose=False)
         # Get test error
-        test_rmse = predict_error(algo_so, test_data)
+        test_pred = predict(algo_so, test_data, prediction_path,
+            'model_slope_one_te_{}'.format(fold_number))
+        test_rmse = rmse(test_pred, verbose=False)
         return train_rmse, test_rmse
     else:
         # Create and save predictions as Kaggle submissions
-        predict(algo_so, test_data, prediction_path, 'model_slope_one_sub')
-        predict(algo_so, train_data, prediction_path, 'model_slope_one_tr')
+        te_pred = predict(algo_so, test_data, prediction_path, 'model_slope_one_sub')
 
 def model_co_clustering(train_data, test_data, test_flag, prediction_path='',
-    n_cltr_u=75, n_cltr_i=3, n_epochs=100):
+    n_cltr_u=75, n_cltr_i=3, n_epochs=100, fold_number=''):
     # Set seed and RandomState
     np.random.seed(0)
     rand_state = RandomState(0)
@@ -43,18 +45,20 @@ def model_co_clustering(train_data, test_data, test_flag, prediction_path='',
     algo_cc.train(train_data)
     if test_flag:
         # Get train error
-        train_rmse = predict_error(algo_cc, train_data)
+        train_pred = predict(algo_cc, train_data, '', '', save=False)
+        train_rmse = rmse(train_pred, verbose=False)
         # Get test error
-        test_rmse = predict_error(algo_cc, test_data)
+        test_pred = predict(algo_cc, test_data, prediction_path,
+            'model_co_clustering_te_{}'.format(fold_number))
+        test_rmse = rmse(test_pred, verbose=False)
         return train_rmse, test_rmse
     else:
         # Create and save predictions as Kaggle submissions
-        predict(algo_cc, test_data, prediction_path, 'model_co_clustering_sub')
-        predict(algo_cc, train_data, prediction_path, 'model_co_clustering_tr')
+        te_pred = predict(algo_cc, test_data, prediction_path, 'model_co_clustering_sub')
 
 def model_knn_baseline(train_data, test_data, test_flag, prediction_path='',
     k=300, min_k=20, name='pearson_baseline',
-    user_based=True, fn_suffix=''):
+    user_based=True, fn_suffix='', fold_number=''):
     # Set seed and RandomState
     np.random.seed(0)
     rand_state = RandomState(0)
@@ -65,20 +69,21 @@ def model_knn_baseline(train_data, test_data, test_flag, prediction_path='',
     algo_knn_bl.train(train_data)
     if test_flag:
         # Get train error
-        train_rmse = predict_error(algo_knn_bl, train_data)
+        train_pred = predict(algo_knn_bl, train_data, '', '', save=False)
+        train_rmse = rmse(train_pred, verbose=False)
         # Get test error
-        test_rmse = predict_error(algo_knn_bl, test_data)
+        test_pred = predict(algo_knn_bl, test_data, prediction_path,
+            'model_knn_baseline_{}te_{}'.format(fn_suffix, fold_number))
+        test_rmse = rmse(test_pred, verbose=False)
         return train_rmse, test_rmse
     else:
         # Create and save predictions as Kaggle submissions
-        predict(algo_knn_bl, test_data, prediction_path,
+        te_pred = predict(algo_knn_bl, test_data, prediction_path,
             'model_knn_baseline_{}sub'.format(fn_suffix))
-        predict(algo_knn_bl, train_data, prediction_path,
-            'model_knn_baseline_{}tr'.format(fn_suffix))
 
 def model_nmf(train_data, test_data, test_flag, prediction_path='',
     biased=True, k=18, reg_pu=0.08, reg_qi=0.08,
-    reg_bu=0.055, reg_bi=0.055, n_epochs=150):
+    reg_bu=0.055, reg_bi=0.055, n_epochs=150, fold_number=''):
     """NMF collaborative filtering"""
     # Set seed and RandomState
     np.random.seed(0)
@@ -90,17 +95,19 @@ def model_nmf(train_data, test_data, test_flag, prediction_path='',
     algo_nmf.train(train_data)
     if test_flag:
         # Get train error
-        train_rmse = predict_error(algo_nmf, train_data)
+        train_pred = predict(algo_nmf, train_data, '', '', save=False)
+        train_rmse = rmse(train_pred, verbose=False)
         # Get test error
-        test_rmse = predict_error(algo_nmf, test_data)
+        test_pred = predict(algo_nmf, test_data, prediction_path,
+            'model_nmf_te_{}'.format(fold_number))
+        test_rmse = rmse(test_pred, verbose=False)
         return train_rmse, test_rmse
     else:
         # Create and save predictions as Kaggle submissions
-        predict(algo_nmf, test_data, prediction_path, 'model_nmf_sub')
-        predict(algo_nmf, train_data, prediction_path, 'model_nmf_tr')
+        te_pred = predict(algo_nmf, test_data, prediction_path, 'model_nmf_sub')
 
 def model_svd(train_data, test_data, test_flag, prediction_path='',
-    biased=True, k=130, reg_all=0.065, n_epochs=50):
+    biased=True, k=130, reg_all=0.065, n_epochs=50, fold_number=''):
     """NMF collaborative filtering"""
     # Set seed and RandomState
     np.random.seed(0)
@@ -111,11 +118,13 @@ def model_svd(train_data, test_data, test_flag, prediction_path='',
     algo_svd.train(train_data)
     if test_flag:
         # Get train error
-        train_rmse = predict_error(algo_svd, train_data)
+        train_pred = predict(algo_svd, train_data, '', '', save=False)
+        train_rmse = rmse(train_pred, verbose=False)
         # Get test error
-        test_rmse = predict_error(algo_svd, test_data)
+        test_pred = predict(algo_svd, test_data, prediction_path,
+            'model_sur_svd_te_{}'.format(fold_number))
+        test_rmse = rmse(test_pred, verbose=False)
         return train_rmse, test_rmse
     else:
         # Create and save predictions as Kaggle submissions
-        predict(algo_svd, test_data, prediction_path, 'model_sur_svd_sub')
-        predict(algo_svd, train_data, prediction_path, 'model_sur_svd_tr')
+        te_pred = predict(algo_svd, test_data, prediction_path, 'model_sur_svd_sub')
