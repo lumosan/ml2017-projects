@@ -25,9 +25,10 @@ def update_user_features(train, i_features, lambda_u,
     new_u_features = np.zeros((k, n_u))
     for u, i in nz_i_per_user:
         M = i_features[:,i]
-        V = train[i,u].T.dot(M.T)
+        V = M.dot(train[i,u])
         A = M.dot(M.T) + n_i_per_user[u] * lambda_u_I
-        new_u_features[:,u] = np.linalg.solve(A, V.T).T
+        X = np.linalg.solve(A, V)
+        new_u_features[:,u] = X.T
     return new_u_features
 
 
@@ -40,9 +41,10 @@ def update_item_features(train, u_features, lambda_i,
     new_i_features = np.zeros((k, n_i))
     for i, u in nz_u_per_item:
         M = u_features[:,u]
-        V = train[i,u].dot(M.T)
+        V = M.dot(train[i,u].T)
         A = M.dot(M.T) + n_u_per_item[i] * lambda_i_I
-        new_i_features[:,i] = np.linalg.solve(A, V.T).T
+        X = np.linalg.solve(A, V)
+        new_i_features[:,i] = X.T
     return new_i_features
 
 
@@ -75,10 +77,11 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
     np.random.seed(988)
 
     # Substract baseline from `train_data`
-    train_dem, global_mean, user_means, item_means = demean_matrix(train_data)
+    train_dem_csr, global_mean, user_means, item_means = demean_matrix(train_data)
+    train_dem = train_dem_csr.todense()
 
     # Initialize feature vectors for users and items
-    rand_u_features, rand_i_features = init_MF(train_dem, k)
+    rand_u_features, rand_i_features = init_MF(train_dem_csr, k)
     if init_u_features is None:
         u_features = rand_u_features
     else:
@@ -90,11 +93,11 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
         i_features = init_i_features
 
     # Get number of non-zero ratings per user and item
-    n_i_per_user = train_dem.getnnz(axis=0)
-    n_u_per_item = train_dem.getnnz(axis=1)
+    n_i_per_user = train_dem_csr.getnnz(axis=0)
+    n_u_per_item = train_dem_csr.getnnz(axis=1)
 
     # Get non-zero ratings per user and item
-    nz_train, nz_u_per_item, nz_i_per_user = build_index_groups(train_dem)
+    nz_train, nz_u_per_item, nz_i_per_user = build_index_groups(train_dem_csr)
 
     e = 1000
 
@@ -106,7 +109,7 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
             n_u_per_item, nz_u_per_item)
         # compute and print new training error
         old_e = e
-        e = compute_error(train_dem, u_features, i_features, nz_train)
+        e = compute_error(train_dem_csr, u_features, i_features, nz_train)
         if(abs(old_e - e) < tol):
             break
         if(old_e - e < -tol):
