@@ -116,16 +116,6 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
         if(old_e - e < -tol):
             #TODO: Remove this print and ask a TA about this
             break
-    with open("u_features.txt", "w") as f:
-        f.write('[')
-        for row in u_features:
-            f.write('['+', '.join(str(elem) for elem in row) + '], ')
-        f.write(']')
-    with open("i_features.txt", "w") as f:
-        f.write('[')
-        for row in i_features:
-            f.write('['+', '.join(str(elem) for elem in row) + '], ')
-        f.write(']')
     if test_flag:
         # Get predictions for `train_data`
         tr_pred, tr_vals = predict(train_data, '', save=False)
