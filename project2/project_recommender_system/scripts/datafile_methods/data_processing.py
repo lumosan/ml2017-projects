@@ -1,6 +1,5 @@
 import numpy as np
 import scipy.sparse as sp
-from itertools import compress
 import csv
 
 
@@ -110,27 +109,3 @@ def k_fold_split(ratings, k=5):
     n_ratings = np.full((1,k),1/k).flatten()
     folds = split_data(ratings, p_test=n_ratings)
     return folds
-
-def disjoint_subsets_on_support(ratings, indices):
-    """Returns two sparse matrices, the first has data for columns
-    included in indices, the second the remaining.
-    """
-    # Split the data into two subsets
-    # initialize sparse matrix
-    ratings_high = sp.lil_matrix(ratings.shape)
-    # copy relevant items to sparse matrices
-    ratings_high[:,indices] = ratings[:,indices]
-    ratings_low = ratings - ratings_high
-    return ratings_high, ratings_low
-
-def obtain_indices_high_support(all_ratings, val=1802):
-    """Returns a list of the users with the highest support.
-    Suport of a rating (i,u) is the number of ratings user u has given.
-    """
-    # Obtain number of ratings per user
-    num_ratings_per_user = np.array((all_ratings != 0).sum(axis=0)).flatten()
-    # Get users with highest support
-    high_support_bool = num_ratings_per_user > val
-    high_support_users = list(compress(range(len(high_support_bool)), high_support_bool))
-    indices = high_support_users
-    return indices
