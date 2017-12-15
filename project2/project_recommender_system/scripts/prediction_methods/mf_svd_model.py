@@ -3,7 +3,7 @@ import scipy.sparse as sp
 from scipy.sparse.linalg import svds
 from sklearn.decomposition import TruncatedSVD
 from prediction_methods.baseline_model import demean_matrix
-from prediction_methods.model_helpers import calculate_mse
+from prediction_methods.model_helpers import calculate_rmse
 from datafile_methods.data_io import save_csv
 
 
@@ -62,11 +62,9 @@ def model_mf_svd(train_data, test_data, test_flag, prediction_path='',
         te_pred, te_vals = predict(test_data,
             'model_mf_svd_{}te_{}'.format(fn_suffix, fold_number))
         # Compute train error
-        train_mse = calculate_mse(tr_vals, tr_pred)
-        train_rmse = np.sqrt(train_mse / len(tr_vals))
+        train_rmse = calculate_rmse(tr_vals, tr_pred)
         # Compute test error
-        test_mse = calculate_mse(te_vals, te_pred)
-        test_rmse = np.sqrt(test_mse / len(te_vals))
+        test_rmse = calculate_rmse(te_vals, te_pred)
         return train_rmse, test_rmse
     else:
         # Create and save predictions as Kaggle submissions

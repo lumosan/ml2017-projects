@@ -1,6 +1,6 @@
 import numpy as np
 from itertools import groupby
-
+from sklearn.metrics import mean_squared_error
 
 def compute_division(a, b):
     """Computes element by element division.
@@ -26,16 +26,15 @@ def compute_error(data, u_features, i_features, nz):
     preds = np.array([(u_features[:,u].dot(i_features[:,i]))
         for (i, u) in nz])
     vals = np.array([data[i,u] for (i,u) in nz])
-    mse = calculate_mse(vals, preds)
-    rmse = np.sqrt(mse / len(vals))
+    rmse = calculate_rmse(vals, preds)
     return rmse
 
 
-def calculate_mse(real_label, prediction):
-    """calculate MSE."""
-    t = real_label - prediction
-    return 1.0 * t.dot(t.T)
-
+def calculate_rmse(real_label, prediction):
+    """calculate RMSE"""
+    mse = mean_squared_error(real_label, prediction)
+    rmse = np.sqrt(mse)
+    return rmse
 
 
 def build_index_groups(train):

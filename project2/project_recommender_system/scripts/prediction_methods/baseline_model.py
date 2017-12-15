@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.sparse as sp
 from datafile_methods.data_io import save_csv
-from prediction_methods.model_helpers import compute_division, calculate_mse
+from prediction_methods.model_helpers import compute_division, calculate_rmse
 
 
 def baseline_rating(data):
@@ -132,11 +132,9 @@ def model_baseline(train_data, test_data, test_flag, prediction_path='', fold_nu
         # Get and save predictions for `test_data`
         te_pred, te_vals = predict(test_data, 'model_baseline_te_{}'.format(fold_number))
         # Compute train error
-        train_mse = calculate_mse(tr_vals, tr_pred)
-        train_rmse = np.sqrt(train_mse / len(tr_vals))
+        train_rmse = calculate_rmse(tr_vals, tr_pred)
         # Compute test error
-        test_mse = calculate_mse(te_vals, te_pred)
-        test_rmse = np.sqrt(test_mse / len(te_vals))
+        test_rmse = calculate_rmse(te_vals, te_pred)
         return train_rmse, test_rmse
     else:
         # Create and save predictions as Kaggle submissions
