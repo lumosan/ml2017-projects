@@ -16,7 +16,7 @@
 \maketitle
 
 \begin{abstract}
-  This report presents the results of using different Collaborative Filtering methods for implementing a Recommendation System. We use both neighborhood methods and latent factor models for predicting new ratings, and these methods are analyzed and compared to each other. We then build an ensemble of those methods using Ridge Regression and consider different ways to improve the ensemble in order to obtain better predictions.
+  We evaluate the performance of  Collaborative Filtering methods for implementing a Recommendation System. With these methods we are able to obtain 0.9875 RMSE on a heldout test set. We consider both nearest neighbor methods and latent factor models for predicting new ratings. An ensemble predictor is built based on the previous methods employing Ridge Regression. The ensemble further reduces the RMSE to 0.9757 RMSE proving the validity of the approach.
 \end{abstract}
 
 \section{Introduction}
@@ -24,7 +24,7 @@
 
   Since the available data consists only on the past ratings without any information about the users or films, we focus on Collaborative Filtering (CF) techniques. Ensemble methods are one of the most successful approaches for this problem.
 
-  We use an ensemble approach to combine the predictions obtained with well-known CF techniques, including neighborhood methods and latent factor models \cite{koren2009matrix}. Ensemble methods achieve better results when combining predictions that are very different from each other but achieve low RMSE scores individually, which is the reason why we use a variety of CF techniques. After adjusting the parameters of these predictors to minimize their individual RMSE, we use their predictions as features for Ridge Regression.
+  We use an ensemble approach to combine the predictions obtained with well-known CF techniques, including neighborhood methods and latent factor models \cite{koren2009matrix}. This approach achieves better results when combining predictions that are very different from each other but achieve low RMSE scores individually, which is the reason why we use a variety of CF techniques. After adjusting the parameters of these predictors to minimize their individual RMSE, we use their predictions as features for Ridge Regression.
 
   One of the challenges we face is dealing with users and items that have a lower number of ratings, since some methods do not yield good results for these and are better at making predictions for items and users with a higher number of ratings.
 
@@ -34,7 +34,7 @@
 
   It is important to note that for the ensemble we will be training the Ridge Regression model on the predictions for the \emph{training} dataset, and then use the resulting weights to predict ratings for the \emph{test} dataset. In order to obtain better results we split the \emph{training} into 5 disjoint subsets with approximately the same number of entries. Then we obtain the predictions for each subset by training the models in the remaining 4 subsets. This assures that in the ensembling step more weight is given to the methods that obtain better results, which is important since when using ensembles it is not so essential that individual predictors have a very low RMSE \cite{toscher2009bigchaos}.
 
-  We can improve the ensembling results by increasing the number of features for Ridge Regression. We do this by defining \emph{meta-features} and afterwards building a polynomial basis of the features - which now include both the CF methods predictions and the meta-features.
+  We can further improve the results by increasing the number of features for Ridge Regression. We do this by defining \emph{meta-features} and afterwards building a polynomial basis of the features - which now include both the CF methods predictions and the meta-features.
 
   Lastly, we explain how we solved the problem of having a lower number of ratings for some users and items.
 
@@ -65,7 +65,7 @@
           \hat{r}_{ui} = \mu_u + \frac{1}{|R_i(u)|} \sum_{j \in R_i(u)} dev(i,j)
       \end{equation}
 
-      Where $R_i(u)$ is the set of relevant items and $\text{dev}(i,j)$ is the average difference between the ratings of items $i$ and $j$ \cite{lemire2005slope}. We used the implementation of this algorithm provided in the Python Surprise library \cite{surprise}.
+      Where $R_i(u)$ is the set of relevant items (items $j$ rated by $u$ with at least one common user with $i$) and $\text{dev}(i,j)$ is the average difference between the ratings of items $i$ and $j$ \cite{lemire2005slope}. We used the implementation of this algorithm provided in the Python Surprise library \cite{surprise}.
 
     % subsubsection slope_one (end)
     \subsubsection{K Nearest Neighbors (KNN)} % (fold)
@@ -234,7 +234,7 @@
   % subsection individual_cf_methods (end)
   \subsection{Ridge Regression ensembling} % (fold)
   \label{sub:ridge_regression_ensembling}
-    In order to test the RMSE achieved by the ensemble we decided to split the \emph{training} dataset in 95\% for train and 5\% for test. We then obtained the predictions for the CF models for the train dataset dividing it into 5 disjoint subsets - as we had done previously. We obtained an RMSE of 0.982649 for test with this ensemble.
+    In order to test the RMSE achieved by the ensemble we decided to split the \emph{training} dataset in 95\% for train and 5\% for test. We then obtained the predictions for the CF models for the train dataset dividing it into 5 disjoint subsets - as we had done previously. We obtained an RMSE of 0.9826 for test with this ensemble.
   % subsection ridge_regression_ensembling (end)
   \subsection{Ensembling splitting by user support} % (fold)
   \label{sub:ensembling_considering_user_support}
@@ -255,7 +255,7 @@
     \end{figure}
     It is expected that the error is higher when there are fewer ratings available, but it is particularly interesting to compare how well the models do compared to each other depending on the support.
 
-    We then tested the ensemble considering the same 95\% and 5\% train and test subsets as in the previous ensemble, in this case achieving an RMSE score of 0.975737.
+    We then tested the ensemble considering the same 95\% and 5\% train and test subsets as in the previous ensemble, in this case achieving an RMSE score of 0.9757.
   % subsection ensembling_considering_user_support (end)
 \section{Discussion}
 \label{sec:discussion}
