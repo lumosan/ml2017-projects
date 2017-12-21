@@ -14,8 +14,7 @@ def model_svd1(train_data, test_data, test_flag, prediction_path='',
     If `test_flag` is True, then it also computes train and test rmse.
     The method used is sklearn.decomposition.TruncatedSVD
     """
-    assert k <= min(train_data.shape), "k must be smaller than the"
-        "min dimension of `train_data`"
+    assert k <= min(train_data.shape), "k must be smaller than the min dimension of `train_data`"
 
     def predict(data, filename, save=True):
         # Get non-zero elements

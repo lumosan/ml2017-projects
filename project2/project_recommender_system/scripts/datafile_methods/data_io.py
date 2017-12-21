@@ -1,17 +1,42 @@
 import os
 import csv
 import scipy.sparse as sp
-from datafile_methods.data_processing import load_data
+from datafile_methods.data_processing import load_data, k_fold_split, parse_data_sur
 from surprise.dataset import Reader
 from surprise import Dataset
 
 
-## Methods for loading data
-def load_datasets(data_path='../data/'):
-    """ Load all datasets """
+## Methods for loading and preparing data
+def prepare_data(k=5, data_path=''):
+    """Splits data for training and test and for Surprise library"""
+    # Load training dataset and example submission
     ratings = load_data('{dp}data_train.csv'.format(dp=data_path))
     sample_submission = load_data('{dp}sample_submission.csv'.format(dp=data_path))
-    folds = [load_data('{dp}fold{i}.csv'.format(dp=data_path, i=i)) for i in range(5)]
+    # Split training data for cross-validation and save files
+    folds = k_fold_split(ratings, k=k)
+    for i, f in enumerate(folds):
+        save_csv(f, prediction_path=data_path, filename='fold{}'.format(i))
+
+    # Parse input data files into surprise format
+    # initialize lists with names of files
+    train_sub_filenames = ['data_train', 'sample_submission']
+    fold_filenames = ['fold{}'.format(i) for i in range(k)]
+    # save files
+    for fn in train_sub_filenames:
+        parse_data_sur([fn], data_path=data_path, output_fn=fn,
+            output_path=data_path+'surprise/')
+
+    # prepare and save fold files
+    for i in range(k):
+        train_fn = fold_filenames.copy()
+        test_fn = train_fn.pop(i)
+        parse_data_sur(train_fn, data_path=data_path,
+            output_fn='fold_tr_{}'.format(i),
+            output_path=data_path+'surprise/')
+
+        parse_data_sur([test_fn], data_path=data_path,
+            output_fn='fold_te_{}'.format(i),
+            output_path=data_path+'surprise/')
     return folds, ratings, sample_submission
 
 def load_datasets_sur(data_path='../data/surprise/'):
