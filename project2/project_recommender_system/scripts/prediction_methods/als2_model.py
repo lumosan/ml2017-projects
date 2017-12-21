@@ -4,8 +4,6 @@ from prediction_methods.model_helpers import build_index_groups, compute_error, 
 from prediction_methods.baseline_model import demean_matrix, demean_test_matrix
 from datafile_methods.data_io import save_csv
 
-import io
-
 def init_MF(data, k):
     """Initializes parameters for Matrix Factorization.
     Assumes 'data' matrix is already demeaned.
@@ -49,8 +47,8 @@ def update_item_features(train, u_features, lambda_i,
     return new_i_features
 
 
-def model_mf_als(train_data, test_data, test_flag, prediction_path='',
-    k=20, lambda_u=.1, lambda_i=.7, tol=1e-6, max_iter=100,
+def model_als2(train_data, test_data, test_flag, prediction_path='',
+    k=20, lambda_u=.1, lambda_i=.1, tol=1e-6, max_iter=100,
     init_u_features=None, init_i_features=None, fold_number=''):
     """Matrix factorization by ALS
     Trains a model on the csr sparse matrix `train_data` and
@@ -111,17 +109,14 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
         # compute and print new training error
         old_e = e
         e = compute_error(train_dem_csr, u_features, i_features, nz_train)
-        if(abs(old_e - e) < tol):
-            break
-        if(old_e - e < -tol):
-            #TODO: Remove this print and ask a TA about this
+        if(old_e - e < tol):
             break
     if test_flag:
         # Get predictions for `train_data`
         tr_pred, tr_vals = predict(train_data, '', save=False)
         # Get and save predictions for `test_data`
         te_pred, te_vals = predict(test_data,
-            'model_mf_als_te_{}'.format(fold_number))
+            'model_als2_te_{}'.format(fold_number))
         # Compute train error
         train_rmse = calculate_rmse(tr_vals, tr_pred)
         # Compute test error
@@ -129,4 +124,4 @@ def model_mf_als(train_data, test_data, test_flag, prediction_path='',
         return train_rmse, test_rmse
     else:
         # Create and save predictions as Kaggle submissions
-        te_pred, te_vals = predict(test_data, 'model_mf_als_sub')
+        te_pred, te_vals = predict(test_data, 'model_als2_sub')

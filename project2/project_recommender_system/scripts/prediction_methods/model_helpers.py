@@ -2,6 +2,7 @@ import numpy as np
 from itertools import groupby
 from sklearn.metrics import mean_squared_error
 
+
 def compute_division(a, b):
     """Computes element by element division.
     If x/0 returns 0.
@@ -18,7 +19,6 @@ def compute_division(a, b):
             res[i] = a[i] / b[i]
 
     return res
-
 
 
 def compute_error(data, u_features, i_features, nz):

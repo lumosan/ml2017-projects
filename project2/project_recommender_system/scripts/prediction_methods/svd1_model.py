@@ -1,24 +1,21 @@
 import numpy as np
 import scipy.sparse as sp
-from scipy.sparse.linalg import svds
 from sklearn.decomposition import TruncatedSVD
 from prediction_methods.baseline_model import demean_matrix
 from prediction_methods.model_helpers import calculate_rmse
 from datafile_methods.data_io import save_csv
 
 
-def model_mf_svd(train_data, test_data, test_flag, prediction_path='',
-    k=20, n_iter=10, random_state=42, library='scipy',
-    fn_suffix='', fold_number=''):
+def model_svd1(train_data, test_data, test_flag, prediction_path='',
+    k=20, n_iter=10, random_state=42, fold_number=''):
     """Matrix factorization by SVD.
     Trains a model on the csr sparse matrix `train_data` and
     creates a prediction for the csr sparse matrix `test_data`.
     If `test_flag` is True, then it also computes train and test rmse.
-    The methods that can be used are either scipy.sparse.linalg.svds
-    or sklearn.decomposition.TruncatedSVD, depending on the value of
-    `library` ('scipy' or 'sklearn' values are possible)
+    The method used is sklearn.decomposition.TruncatedSVD
     """
-    assert k <= min(train_data.shape), "k must be smaller than the min dimension of `train_data`"
+    assert k <= min(train_data.shape), "k must be smaller than the"
+        "min dimension of `train_data`"
 
     def predict(data, filename, save=True):
         # Get non-zero elements
@@ -43,24 +40,17 @@ def model_mf_svd(train_data, test_data, test_flag, prediction_path='',
     # Substract baseline from `train_data`
     train_dem, global_mean, user_means, item_means = demean_matrix(train_data)
 
-    # Train model
-    if library == 'scipy':
-        # Use scipy's svds
-        U, sigma, user_features = svds(train_dem, k)
-        sigma = np.diag(sigma)
-        item_features = np.dot(U, sigma)
-    else:
-        # Use sklearn's TruncatedSVD
-        svd = TruncatedSVD(n_components=k, n_iter=n_iter, random_state=random_state)
-        item_features = svd.fit_transform(train_dem)
-        user_features = svd.components_
+    # Train model using sklearn's TruncatedSVD
+    svd = TruncatedSVD(n_components=k, n_iter=n_iter, random_state=random_state)
+    item_features = svd.fit_transform(train_dem)
+    user_features = svd.components_
 
     if test_flag:
         # Get predictions for `train_data`
         tr_pred, tr_vals = predict(train_data, '', save=False)
         # Get and save predictions for `test_data`
         te_pred, te_vals = predict(test_data,
-            'model_mf_svd_{}te_{}'.format(fn_suffix, fold_number))
+            'model_svd1_te_{}'.format(fold_number))
         # Compute train error
         train_rmse = calculate_rmse(tr_vals, tr_pred)
         # Compute test error
@@ -68,4 +58,4 @@ def model_mf_svd(train_data, test_data, test_flag, prediction_path='',
         return train_rmse, test_rmse
     else:
         # Create and save predictions as Kaggle submissions
-        te_pred, te_vals = predict(test_data, 'model_mf_svd_{}sub'.format(fn_suffix))
+        te_pred, te_vals = predict(test_data, 'model_svd1_sub')
