@@ -39,7 +39,7 @@ def prepare_data(k=5, data_path=''):
             output_path=data_path+'surprise/')
     return folds, ratings, sample_submission
 
-def load_datasets_sur(data_path='../data/surprise/'):
+def load_datasets_sur(data_path='data/surprise/'):
     """Load all datasets for 'surprise' library"""
     # Define paths to dataset files
     folds_tr_dp = [os.path.expanduser('{}fold_tr_{}.csv'.format(data_path, i)) for i in range(5)]

@@ -10,11 +10,11 @@ from prediction_methods.surprise_models import model_nmf
 from prediction_methods.surprise_models import model_svd2
 
 
-PREDICTION_PATH = '../data/predictions/'
-DATA_PATH = '../data/'
+PREDICTION_PATH = 'data/predictions/'
+DATA_PATH = 'data/'
 
 # LOAD DATASETS
-
+print('Loading datasets...')
 folds, ratings, sample_submission = prepare_data(k=5, data_path=DATA_PATH)
 folds_tr, folds_te, ratings_sur, sample_submission_sur = load_datasets_sur()
 
